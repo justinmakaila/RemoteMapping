@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:CoreData+RemoteMapping.xcodeproj">
+      location = "self:/Users/justinmakaila/Workspace/CoreData+RemoteMapping/RemoteMapping.xcodeproj">
    </FileRef>
 </Workspace>

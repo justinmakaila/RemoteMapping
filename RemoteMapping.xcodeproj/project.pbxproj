@@ -7,9 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C2ED0F81C95EE6B00360D74 /* CoreData+RemoteMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C2ED0F71C95EE6B00360D74 /* CoreData+RemoteMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7C2ED0FF1C95EE6B00360D74 /* CoreData+RemoteMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C2ED0F41C95EE6B00360D74 /* CoreData+RemoteMapping.framework */; };
-		7C2ED1041C95EE6C00360D74 /* CoreData_RemoteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1031C95EE6C00360D74 /* CoreData_RemoteMappingTests.swift */; };
+		7C2ED0FF1C95EE6B00360D74 /* RemoteMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C2ED0F41C95EE6B00360D74 /* RemoteMapping.framework */; };
+		7C2ED12A1C960E5800360D74 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ED11F1C960E5800360D74 /* Info.plist */; };
+		7C2ED12B1C960E5800360D74 /* RemoteEntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1201C960E5800360D74 /* RemoteEntityType.swift */; };
+		7C2ED12C1C960E5800360D74 /* RemoteMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C2ED1211C960E5800360D74 /* RemoteMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C2ED12D1C960E5800360D74 /* RemoteObjectMappingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1221C960E5800360D74 /* RemoteObjectMappingType.swift */; };
+		7C8F587D1C960FCD00CC2E0A /* RemoteEntityTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1251C960E5800360D74 /* RemoteEntityTypeTests.swift */; };
+		7C8F587E1C960FCD00CC2E0A /* RemoteMappingTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */; };
+		7C8F587F1C960FCD00CC2E0A /* RemoteObjectTypeMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */; };
+		7C8F58801C960FD100CC2E0A /* TestModel.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ED1281C960E5800360D74 /* TestModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +29,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7C2ED0F41C95EE6B00360D74 /* CoreData+RemoteMapping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "CoreData+RemoteMapping.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C2ED0F71C95EE6B00360D74 /* CoreData+RemoteMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreData+RemoteMapping.h"; sourceTree = "<group>"; };
-		7C2ED0F91C95EE6B00360D74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7C2ED0FE1C95EE6B00360D74 /* CoreData+RemoteMappingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreData+RemoteMappingTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C2ED1031C95EE6C00360D74 /* CoreData_RemoteMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData_RemoteMappingTests.swift; sourceTree = "<group>"; };
-		7C2ED1051C95EE6C00360D74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C2ED0F41C95EE6B00360D74 /* RemoteMapping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RemoteMapping.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C2ED0FE1C95EE6B00360D74 /* RemoteMappingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RemoteMappingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C2ED11F1C960E5800360D74 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C2ED1201C960E5800360D74 /* RemoteEntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEntityType.swift; sourceTree = "<group>"; };
+		7C2ED1211C960E5800360D74 /* RemoteMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMapping.h; sourceTree = "<group>"; };
+		7C2ED1221C960E5800360D74 /* RemoteObjectMappingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteObjectMappingType.swift; sourceTree = "<group>"; };
+		7C2ED1241C960E5800360D74 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C2ED1251C960E5800360D74 /* RemoteEntityTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEntityTypeTests.swift; sourceTree = "<group>"; };
+		7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteMappingTestCase.swift; sourceTree = "<group>"; };
+		7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteObjectTypeMappingTests.swift; sourceTree = "<group>"; };
+		7C2ED1291C960E5800360D74 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C2ED0FF1C95EE6B00360D74 /* CoreData+RemoteMapping.framework in Frameworks */,
+				7C2ED0FF1C95EE6B00360D74 /* RemoteMapping.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,8 +64,8 @@
 		7C2ED0EA1C95EE6B00360D74 = {
 			isa = PBXGroup;
 			children = (
-				7C2ED0F61C95EE6B00360D74 /* CoreData+RemoteMapping */,
-				7C2ED1021C95EE6C00360D74 /* CoreData+RemoteMappingTests */,
+				7C2ED11E1C960E5800360D74 /* RemoteMapping */,
+				7C2ED1231C960E5800360D74 /* RemoteMappingTests */,
 				7C2ED0F51C95EE6B00360D74 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,28 +73,33 @@
 		7C2ED0F51C95EE6B00360D74 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7C2ED0F41C95EE6B00360D74 /* CoreData+RemoteMapping.framework */,
-				7C2ED0FE1C95EE6B00360D74 /* CoreData+RemoteMappingTests.xctest */,
+				7C2ED0F41C95EE6B00360D74 /* RemoteMapping.framework */,
+				7C2ED0FE1C95EE6B00360D74 /* RemoteMappingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7C2ED0F61C95EE6B00360D74 /* CoreData+RemoteMapping */ = {
+		7C2ED11E1C960E5800360D74 /* RemoteMapping */ = {
 			isa = PBXGroup;
 			children = (
-				7C2ED0F71C95EE6B00360D74 /* CoreData+RemoteMapping.h */,
-				7C2ED0F91C95EE6B00360D74 /* Info.plist */,
+				7C2ED1211C960E5800360D74 /* RemoteMapping.h */,
+				7C2ED1201C960E5800360D74 /* RemoteEntityType.swift */,
+				7C2ED1221C960E5800360D74 /* RemoteObjectMappingType.swift */,
+				7C2ED11F1C960E5800360D74 /* Info.plist */,
 			);
-			path = "CoreData+RemoteMapping";
+			path = RemoteMapping;
 			sourceTree = "<group>";
 		};
-		7C2ED1021C95EE6C00360D74 /* CoreData+RemoteMappingTests */ = {
+		7C2ED1231C960E5800360D74 /* RemoteMappingTests */ = {
 			isa = PBXGroup;
 			children = (
-				7C2ED1031C95EE6C00360D74 /* CoreData_RemoteMappingTests.swift */,
-				7C2ED1051C95EE6C00360D74 /* Info.plist */,
+				7C2ED1241C960E5800360D74 /* Info.plist */,
+				7C2ED1251C960E5800360D74 /* RemoteEntityTypeTests.swift */,
+				7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */,
+				7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */,
+				7C2ED1281C960E5800360D74 /* TestModel.xcdatamodeld */,
 			);
-			path = "CoreData+RemoteMappingTests";
+			path = RemoteMappingTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,16 +109,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C2ED0F81C95EE6B00360D74 /* CoreData+RemoteMapping.h in Headers */,
+				7C2ED12C1C960E5800360D74 /* RemoteMapping.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		7C2ED0F31C95EE6B00360D74 /* CoreData+RemoteMapping */ = {
+		7C2ED0F31C95EE6B00360D74 /* RemoteMapping */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7C2ED1081C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "CoreData+RemoteMapping" */;
+			buildConfigurationList = 7C2ED1081C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "RemoteMapping" */;
 			buildPhases = (
 				7C2ED0EF1C95EE6B00360D74 /* Sources */,
 				7C2ED0F01C95EE6B00360D74 /* Frameworks */,
@@ -113,14 +129,14 @@
 			);
 			dependencies = (
 			);
-			name = "CoreData+RemoteMapping";
+			name = RemoteMapping;
 			productName = "CoreData+RemoteMapping";
-			productReference = 7C2ED0F41C95EE6B00360D74 /* CoreData+RemoteMapping.framework */;
+			productReference = 7C2ED0F41C95EE6B00360D74 /* RemoteMapping.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		7C2ED0FD1C95EE6B00360D74 /* CoreData+RemoteMappingTests */ = {
+		7C2ED0FD1C95EE6B00360D74 /* RemoteMappingTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7C2ED10B1C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "CoreData+RemoteMappingTests" */;
+			buildConfigurationList = 7C2ED10B1C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "RemoteMappingTests" */;
 			buildPhases = (
 				7C2ED0FA1C95EE6B00360D74 /* Sources */,
 				7C2ED0FB1C95EE6B00360D74 /* Frameworks */,
@@ -131,9 +147,9 @@
 			dependencies = (
 				7C2ED1011C95EE6B00360D74 /* PBXTargetDependency */,
 			);
-			name = "CoreData+RemoteMappingTests";
+			name = RemoteMappingTests;
 			productName = "CoreData+RemoteMappingTests";
-			productReference = 7C2ED0FE1C95EE6B00360D74 /* CoreData+RemoteMappingTests.xctest */;
+			productReference = 7C2ED0FE1C95EE6B00360D74 /* RemoteMappingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -154,7 +170,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7C2ED0EE1C95EE6B00360D74 /* Build configuration list for PBXProject "CoreData+RemoteMapping" */;
+			buildConfigurationList = 7C2ED0EE1C95EE6B00360D74 /* Build configuration list for PBXProject "RemoteMapping" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -166,8 +182,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7C2ED0F31C95EE6B00360D74 /* CoreData+RemoteMapping */,
-				7C2ED0FD1C95EE6B00360D74 /* CoreData+RemoteMappingTests */,
+				7C2ED0F31C95EE6B00360D74 /* RemoteMapping */,
+				7C2ED0FD1C95EE6B00360D74 /* RemoteMappingTests */,
 			);
 		};
 /* End PBXProject section */
@@ -177,6 +193,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C2ED12A1C960E5800360D74 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C8F58801C960FD100CC2E0A /* TestModel.xcdatamodeld in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +212,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C2ED12B1C960E5800360D74 /* RemoteEntityType.swift in Sources */,
+				7C2ED12D1C960E5800360D74 /* RemoteObjectMappingType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +221,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C2ED1041C95EE6C00360D74 /* CoreData_RemoteMappingTests.swift in Sources */,
+				7C8F587D1C960FCD00CC2E0A /* RemoteEntityTypeTests.swift in Sources */,
+				7C8F587E1C960FCD00CC2E0A /* RemoteMappingTestCase.swift in Sources */,
+				7C8F587F1C960FCD00CC2E0A /* RemoteObjectTypeMappingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +232,7 @@
 /* Begin PBXTargetDependency section */
 		7C2ED1011C95EE6B00360D74 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7C2ED0F31C95EE6B00360D74 /* CoreData+RemoteMapping */;
+			target = 7C2ED0F31C95EE6B00360D74 /* RemoteMapping */;
 			targetProxy = 7C2ED1001C95EE6B00360D74 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -308,31 +330,34 @@
 		7C2ED1091C95EE6C00360D74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "CoreData+RemoteMapping/Info.plist";
+				INFOPLIST_FILE = RemoteMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.justinmakaila.CoreData-RemoteMapping";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.RemoteMapping;
+				PRODUCT_NAME = RemoteMapping;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		7C2ED10A1C95EE6C00360D74 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "CoreData+RemoteMapping/Info.plist";
+				INFOPLIST_FILE = RemoteMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.justinmakaila.CoreData-RemoteMapping";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.RemoteMapping;
+				PRODUCT_NAME = RemoteMapping;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -340,9 +365,9 @@
 		7C2ED10C1C95EE6C00360D74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = "CoreData+RemoteMappingTests/Info.plist";
+				INFOPLIST_FILE = RemoteMappingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.justinmakaila.CoreData-RemoteMappingTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.RemoteMappingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -350,9 +375,9 @@
 		7C2ED10D1C95EE6C00360D74 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = "CoreData+RemoteMappingTests/Info.plist";
+				INFOPLIST_FILE = RemoteMappingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.justinmakaila.CoreData-RemoteMappingTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.RemoteMappingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -360,7 +385,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7C2ED0EE1C95EE6B00360D74 /* Build configuration list for PBXProject "CoreData+RemoteMapping" */ = {
+		7C2ED0EE1C95EE6B00360D74 /* Build configuration list for PBXProject "RemoteMapping" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C2ED1061C95EE6C00360D74 /* Debug */,
@@ -369,23 +394,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7C2ED1081C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "CoreData+RemoteMapping" */ = {
+		7C2ED1081C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "RemoteMapping" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C2ED1091C95EE6C00360D74 /* Debug */,
 				7C2ED10A1C95EE6C00360D74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		7C2ED10B1C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "CoreData+RemoteMappingTests" */ = {
+		7C2ED10B1C95EE6C00360D74 /* Build configuration list for PBXNativeTarget "RemoteMappingTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C2ED10C1C95EE6C00360D74 /* Debug */,
 				7C2ED10D1C95EE6C00360D74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7C2ED1281C960E5800360D74 /* TestModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7C2ED1291C960E5800360D74 /* TestModel.xcdatamodel */,
+			);
+			currentVersion = 7C2ED1291C960E5800360D74 /* TestModel.xcdatamodel */;
+			path = TestModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7C2ED0EB1C95EE6B00360D74 /* Project object */;
 }

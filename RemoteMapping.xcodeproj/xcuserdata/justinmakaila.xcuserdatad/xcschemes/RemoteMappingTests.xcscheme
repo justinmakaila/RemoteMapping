@@ -12,6 +12,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7C2ED0FD1C95EE6B00360D74"
+               BuildableName = "RemoteMappingTests.xctest"
+               BlueprintName = "RemoteMappingTests"
+               ReferencedContainer = "container:RemoteMapping.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <AdditionalOptions>
       </AdditionalOptions>
