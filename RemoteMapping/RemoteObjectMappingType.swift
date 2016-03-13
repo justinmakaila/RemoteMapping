@@ -2,7 +2,7 @@ import CoreData
 
 
 /// Represents mapping from a local object property to a remote object property
-protocol RemoteObjectMappingType {
+public protocol RemoteObjectMappingType {
     /// The remote property key.
     var remotePropertyKey: String { get }
     /// Whether or not the property should be ignored.
@@ -13,7 +13,7 @@ extension NSPropertyDescription: RemoteObjectMappingType {
     /// The remote property key.
     ///
     /// Defaults to `name`.
-    var remotePropertyKey: String {
+    public var remotePropertyKey: String {
         return userInfo?[Key.PropertyMapping.rawValue] as? String ?? name
     }
     
@@ -21,20 +21,20 @@ extension NSPropertyDescription: RemoteObjectMappingType {
     ///
     /// Checks to see if the "remoteShouldIgnore" key is
     /// present in `userInfo`. If it is, returns true.
-    var remoteShouldIgnore: Bool {
+    public var remoteShouldIgnore: Bool {
         return userInfo?[Key.Ignore.rawValue] != nil
     }
 }
 
 extension NSEntityDescription {
     /// `properties` filtered by `remoteShouldIgnore`.
-    var remoteProperties: [NSPropertyDescription] {
+    public var remoteProperties: [NSPropertyDescription] {
         return properties.filter { !$0.remoteShouldIgnore }
     }
     
     /// An index of remote property keys and the corresponding
     /// property description.
-    var remotePropertiesByName: [String: NSPropertyDescription] {
+    public var remotePropertiesByName: [String: NSPropertyDescription] {
         return remoteProperties
             .reduce([String: NSPropertyDescription]()) { remotePropertiesByName, propertyDescription in
                 var properties = remotePropertiesByName
@@ -46,7 +46,7 @@ extension NSEntityDescription {
     
     /// An index of local property names and the corresponding
     /// property description of `remoteProperties`.
-    var remotePropertiesByLocalName: [String: NSPropertyDescription] {
+    public var remotePropertiesByLocalName: [String: NSPropertyDescription] {
         return remoteProperties
             .reduce([String: NSPropertyDescription]()) { remotePropertiesByName, propertyDescription in
                 var properties = remotePropertiesByName

@@ -2,7 +2,7 @@ import CoreData
 
 
 /// Represents an entity and it's primary keys
-protocol RemoteEntityType {
+public protocol RemoteEntityType {
     /// The remote primary key name.
     var remotePrimaryKeyName: String { get }
     /// The local primary key name.
@@ -22,7 +22,7 @@ extension NSEntityDescription: RemoteEntityType {
     /// The remote primary key name.
     ///
     /// Defaults to `localPrimaryKeyName` if none provided.
-    var remotePrimaryKeyName: String {
+    public var remotePrimaryKeyName: String {
         if let remotePrimaryKey = userInfo?[Key.RemotePrimaryKey.rawValue] as? String {
             return remotePrimaryKey
         }
@@ -37,7 +37,7 @@ extension NSEntityDescription: RemoteEntityType {
     /// The local primary key name.
     ///
     /// Defaults to "remoteID" if none is provided
-    var localPrimaryKeyName: String {
+    public var localPrimaryKeyName: String {
         if let localPrimaryKey = userInfo?[Key.LocalPrimaryKey.rawValue] as? String {
             return localPrimaryKey
         }
@@ -50,12 +50,12 @@ extension NSEntityDescription: RemoteEntityType {
     }
     
     /// The value for `localPrimaryKeyName`.
-    var localPrimaryKey: AnyObject? {
+    public var localPrimaryKey: AnyObject? {
         return valueForKey(localPrimaryKeyName)
     }
     
     /// The value for `remotePrimaryKeyName`.
-    var remotePrimaryKey: AnyObject? {
+    public var remotePrimaryKey: AnyObject? {
         return valueForKey(remotePrimaryKeyName)
     }
 }
