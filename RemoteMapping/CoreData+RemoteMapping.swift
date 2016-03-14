@@ -14,7 +14,7 @@ extension NSPropertyDescription: RemoteObjectMappingType {
     /// The remote property key.
     ///
     /// Defaults to `name`.
-    public var remotePropertyKey: String {
+    public var remotePropertyName: String {
         return userInfo?[Key.PropertyMapping.rawValue] as? String ?? name
     }
     
@@ -68,32 +68,39 @@ extension NSEntityDescription: RemoteEntityType {
         return valueForKey(remotePrimaryKeyName)
     }
     
-    /// `properties` filtered by `remoteShouldIgnore`.
+    /// The properties represented on the remote.
     public var remoteProperties: [NSPropertyDescription] {
         return properties.filter { !$0.remoteShouldIgnore }
     }
     
-    /// An index of remote property keys and the corresponding
+    /// An index of remote property names and the corresponding
     /// property description.
-    public var remotePropertiesByName: [String: NSPropertyDescription] {
+    public func remotePropertiesByName(useLocalNames: Bool = false) -> [String: NSPropertyDescription] {
         return remoteProperties
             .reduce([String: NSPropertyDescription]()) { remotePropertiesByName, propertyDescription in
+                let key = (useLocalNames) ? propertyDescription.name : propertyDescription.remotePropertyName
                 var properties = remotePropertiesByName
-                properties[propertyDescription.remotePropertyKey] = propertyDescription
+                properties[key] = propertyDescription
                 
                 return properties
             }
     }
     
-    /// An index of local property names and the corresponding
-    /// property description of `remoteProperties`.
-    public var remotePropertiesByLocalName: [String: NSPropertyDescription] {
-        return remoteProperties
-            .reduce([String: NSPropertyDescription]()) { remotePropertiesByName, propertyDescription in
-                var properties = remotePropertiesByName
-                properties[propertyDescription.name] = propertyDescription
+    /// The relationships represented on the remote.
+    public var remoteRelationships: [NSRelationshipDescription] {
+        return remoteProperties.flatMap { $0 as? NSRelationshipDescription }
+    }
+    
+    /// An index of remote property names and the corresponding
+    /// relationship description
+    public func remoteRelationshipsByName(useLocalNames: Bool = false) -> [String: NSRelationshipDescription] {
+        return remoteRelationships
+            .reduce([String: NSRelationshipDescription]()) { remoteRelationshipsByName, relationshipDescription in
+                let key = (useLocalNames) ? relationshipDescription.name : relationshipDescription.remotePropertyName
+                var relationships = remoteRelationshipsByName
+                relationships[key] = relationshipDescription
                 
-                return properties
-            }
+                return relationships
+        }
     }
 }

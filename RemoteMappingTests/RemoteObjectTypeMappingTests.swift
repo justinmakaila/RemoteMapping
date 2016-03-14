@@ -23,7 +23,7 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
                 fatalError("Could not find property")
         }
         
-        let remotePropertyName = customRemotePropertyDescription.remotePropertyKey
+        let remotePropertyName = customRemotePropertyDescription.remotePropertyName
         XCTAssertTrue(remotePropertyName == "remoteProperty")
     }
     
@@ -36,7 +36,7 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
                 fatalError("Could not find property")
         }
         
-        let remotePropertyName = defaultRemotePropertyDescription.remotePropertyKey
+        let remotePropertyName = defaultRemotePropertyDescription.remotePropertyName
         XCTAssertTrue(remotePropertyName == defaultRemotePropertyDescription.name)
     }
     
