@@ -12,11 +12,16 @@
 		7C2ED12B1C960E5800360D74 /* RemoteEntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1201C960E5800360D74 /* RemoteEntityType.swift */; };
 		7C2ED12C1C960E5800360D74 /* RemoteMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C2ED1211C960E5800360D74 /* RemoteMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C2ED12D1C960E5800360D74 /* RemoteObjectMappingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1221C960E5800360D74 /* RemoteObjectMappingType.swift */; };
+		7C47C3A71C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3A61C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift */; };
+		7C47C3A91C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3A81C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift */; };
+		7C47C3AB1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */; };
+		7C47C3AE1C9B32E4005ACF99 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 7C47C3AD1C9B32E4005ACF99 /* Cartfile */; };
+		7C47C3B01C9B3317005ACF99 /* ISO8601.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */; };
 		7C8F587D1C960FCD00CC2E0A /* RemoteEntityTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1251C960E5800360D74 /* RemoteEntityTypeTests.swift */; };
 		7C8F587E1C960FCD00CC2E0A /* RemoteMappingTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */; };
 		7C8F587F1C960FCD00CC2E0A /* RemoteObjectTypeMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */; };
 		7C8F58801C960FD100CC2E0A /* TestModel.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ED1281C960E5800360D74 /* TestModel.xcdatamodeld */; };
-		7C8F58871C96231400CC2E0A /* CoreData+RemoteMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F58861C96231400CC2E0A /* CoreData+RemoteMapping.swift */; };
+		7C8F58871C96231400CC2E0A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F58861C96231400CC2E0A /* Keys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +46,12 @@
 		7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteMappingTestCase.swift; sourceTree = "<group>"; };
 		7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteObjectTypeMappingTests.swift; sourceTree = "<group>"; };
 		7C2ED1291C960E5800360D74 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
-		7C8F58861C96231400CC2E0A /* CoreData+RemoteMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreData+RemoteMapping.swift"; sourceTree = "<group>"; };
+		7C47C3A61C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSPropertyDescription+RemoteObjectMappingType.swift"; path = "CoreData+RemoteMapping/NSPropertyDescription+RemoteObjectMappingType.swift"; sourceTree = "<group>"; };
+		7C47C3A81C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSEntityDescription+RemoteEntityType.swift"; path = "CoreData+RemoteMapping/NSEntityDescription+RemoteEntityType.swift"; sourceTree = "<group>"; };
+		7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+RemoteMapping.swift"; path = "CoreData+RemoteMapping/NSManagedObject+RemoteMapping.swift"; sourceTree = "<group>"; };
+		7C47C3AD1C9B32E4005ACF99 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ISO8601.framework; path = Carthage/Build/iOS/ISO8601.framework; sourceTree = "<group>"; };
+		7C8F58861C96231400CC2E0A /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "CoreData+RemoteMapping/Keys.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C47C3B01C9B3317005ACF99 /* ISO8601.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +77,7 @@
 		7C2ED0EA1C95EE6B00360D74 = {
 			isa = PBXGroup;
 			children = (
+				7C47C3AC1C9B32D7005ACF99 /* Dependencies */,
 				7C2ED11E1C960E5800360D74 /* RemoteMapping */,
 				7C2ED1231C960E5800360D74 /* RemoteMappingTests */,
 				7C2ED0F51C95EE6B00360D74 /* Products */,
@@ -85,9 +97,10 @@
 			isa = PBXGroup;
 			children = (
 				7C2ED1211C960E5800360D74 /* RemoteMapping.h */,
+				7C8F58861C96231400CC2E0A /* Keys.swift */,
 				7C2ED1201C960E5800360D74 /* RemoteEntityType.swift */,
 				7C2ED1221C960E5800360D74 /* RemoteObjectMappingType.swift */,
-				7C8F58861C96231400CC2E0A /* CoreData+RemoteMapping.swift */,
+				7C47C3A51C9B24B9005ACF99 /* CoreData+RemoteMapping */,
 				7C2ED11F1C960E5800360D74 /* Info.plist */,
 			);
 			path = RemoteMapping;
@@ -103,6 +116,25 @@
 				7C2ED1281C960E5800360D74 /* TestModel.xcdatamodeld */,
 			);
 			path = RemoteMappingTests;
+			sourceTree = "<group>";
+		};
+		7C47C3A51C9B24B9005ACF99 /* CoreData+RemoteMapping */ = {
+			isa = PBXGroup;
+			children = (
+				7C47C3A61C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift */,
+				7C47C3A81C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift */,
+				7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */,
+			);
+			name = "CoreData+RemoteMapping";
+			sourceTree = "<group>";
+		};
+		7C47C3AC1C9B32D7005ACF99 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */,
+				7C47C3AD1C9B32E4005ACF99 /* Cartfile */,
+			);
+			name = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +228,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C47C3AE1C9B32E4005ACF99 /* Cartfile in Resources */,
 				7C2ED12A1C960E5800360D74 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,8 +248,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C47C3AB1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift in Sources */,
+				7C47C3A71C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift in Sources */,
 				7C2ED12B1C960E5800360D74 /* RemoteEntityType.swift in Sources */,
-				7C8F58871C96231400CC2E0A /* CoreData+RemoteMapping.swift in Sources */,
+				7C8F58871C96231400CC2E0A /* Keys.swift in Sources */,
+				7C47C3A91C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift in Sources */,
 				7C2ED12D1C960E5800360D74 /* RemoteObjectMappingType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +375,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RemoteMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -357,6 +397,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RemoteMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -1,42 +1,16 @@
 import CoreData
 
 
-enum Key: String {
-    case RemotePrimaryKey = "primaryKey.remote"
-    case LocalPrimaryKey = "primaryKey.local"
-    case DefaultLocalPrimaryKey = "remoteID"
-    
-    case PropertyMapping = "remotePropertyName"
-    case Ignore = "remoteShouldIgnore"
-}
-
-extension NSPropertyDescription: RemoteObjectMappingType {
-    /// The remote property key.
-    ///
-    /// Defaults to `name`.
-    public var remotePropertyName: String {
-        return userInfo?[Key.PropertyMapping.rawValue] as? String ?? name
-    }
-    
-    /// Whether or not the property should be ignored.
-    ///
-    /// Checks to see if the "remoteShouldIgnore" key is
-    /// present in `userInfo`. If it is, returns true.
-    public var remoteShouldIgnore: Bool {
-        return userInfo?[Key.Ignore.rawValue] != nil
-    }
-}
-
 extension NSEntityDescription: RemoteEntityType {
     /// The remote primary key name.
     ///
     /// Defaults to `localPrimaryKeyName` if none provided.
     public var remotePrimaryKeyName: String {
-        if let remotePrimaryKey = userInfo?[Key.RemotePrimaryKey.rawValue] as? String {
+        if let remotePrimaryKey = userInfo?[RemoteMapping.Key.RemotePrimaryKey.rawValue] as? String {
             return remotePrimaryKey
         }
         
-        if let superentityRemotePrimaryKey = superentity?.userInfo?[Key.RemotePrimaryKey.rawValue] as? String {
+        if let superentityRemotePrimaryKey = superentity?.userInfo?[RemoteMapping.Key.RemotePrimaryKey.rawValue] as? String {
             return superentityRemotePrimaryKey
         }
         
@@ -47,15 +21,15 @@ extension NSEntityDescription: RemoteEntityType {
     ///
     /// Defaults to "remoteID" if none is provided
     public var localPrimaryKeyName: String {
-        if let localPrimaryKey = userInfo?[Key.LocalPrimaryKey.rawValue] as? String {
+        if let localPrimaryKey = userInfo?[RemoteMapping.Key.LocalPrimaryKey.rawValue] as? String {
             return localPrimaryKey
         }
         
-        if let superentityLocalPrimaryKey = superentity?.userInfo?[Key.LocalPrimaryKey.rawValue] as? String {
+        if let superentityLocalPrimaryKey = superentity?.userInfo?[RemoteMapping.Key.LocalPrimaryKey.rawValue] as? String {
             return superentityLocalPrimaryKey
         }
         
-        return Key.DefaultLocalPrimaryKey.rawValue
+        return RemoteMapping.Key.DefaultLocalPrimaryKey.rawValue
     }
     
     /// The value for `localPrimaryKeyName`.
@@ -83,7 +57,7 @@ extension NSEntityDescription: RemoteEntityType {
                 properties[key] = propertyDescription
                 
                 return properties
-            }
+        }
     }
     
     /// The relationships represented on the remote.
