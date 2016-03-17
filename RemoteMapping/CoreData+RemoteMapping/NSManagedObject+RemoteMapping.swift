@@ -37,7 +37,7 @@ public extension NSManagedObject {
         
         for propertyDescription in properties {
             if let attributeDescription = propertyDescription as? NSAttributeDescription {
-                let remoteKey = remoteKeyForAttributeDescription(attributeDescription)
+                let remoteKey = attributeDescription.remotePropertyName
                 let value = valueForAttribueDescription(attributeDescription)
                 
                 json[remoteKey] = value
@@ -107,7 +107,7 @@ extension NSManagedObject {
     
     /// Returns the value for `attributeDescription` if it's `attributeType` is not a "Transformable" attribute.
     /// !!!: All NSDate attributes are transformed to ISO-8601
-    func valueForAttribueDescription(attributeDescription: NSAttributeDescription) -> AnyObject? {
+    public func valueForAttribueDescription(attributeDescription: NSAttributeDescription) -> AnyObject? {
         var value: AnyObject?
         
         if attributeDescription.attributeType != .TransformableAttributeType {
@@ -124,7 +124,7 @@ extension NSManagedObject {
     }
     
     /// Gets a `NSAttributeDescription` matching `key`, or nil
-    func attributeDescriptionForRemoteKey(key: String) -> NSAttributeDescription? {
+    public func attributeDescriptionForRemoteKey(key: String) -> NSAttributeDescription? {
         var foundAttributeDescription: NSAttributeDescription?
         
         for (_, propertyDescription) in entity.properties.enumerate() {
@@ -140,7 +140,8 @@ extension NSManagedObject {
         return foundAttributeDescription
     }
     
-    func valueForAttributeDescription(attributeDescription: NSAttributeDescription, usingRemoteValue remoteValue: AnyObject) -> AnyObject? {
+    /// Returns the value for the attribute description, transformed from the remote value.
+    public func valueForAttributeDescription(attributeDescription: NSAttributeDescription, usingRemoteValue remoteValue: AnyObject) -> AnyObject? {
         var value: AnyObject?
         
         var attributeClass: AnyClass?
@@ -189,11 +190,6 @@ extension NSManagedObject {
         
         return value
     }
-    
-    func remoteKeyForAttributeDescription(attributeDescription: NSAttributeDescription) -> String {
-        return attributeDescription.remotePropertyName
-    }
-    
     func reservedKeys() -> [String] {
         return NSManagedObject.reservedAttributes()
     }
