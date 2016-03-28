@@ -24,6 +24,15 @@ class RemoteMappingTestCase: XCTestCase {
         return entity
     }
     
+    func insertEntity<A: NSManagedObject>(entityDescription: NSEntityDescription) -> A {
+        guard let object =  NSEntityDescription.insertNewObjectForEntityForName(entityDescription.name!, inManagedObjectContext: self.managedObjectContext) as? A
+        else {
+            fatalError("Could not insert object for entity \(entityDescription.name)")
+        }
+        
+        return object
+    }
+    
     func setupManagedObjectContext() -> NSManagedObjectContext {
         // Load the model from `Wellth.xcdatamodeld`
         guard let modelURL = NSBundle(forClass: RemoteMappingTestCase.self).URLForResource("TestModel", withExtension: "momd"),

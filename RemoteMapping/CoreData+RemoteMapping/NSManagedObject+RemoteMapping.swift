@@ -114,10 +114,10 @@ extension NSManagedObject {
             value = valueForKey(attributeDescription.name)
             
             if let date = value as? NSDate {
-                value = date.ISO8601String()
+                value = date.ISO8601StringWithTimeZone(nil, usingCalendar: nil)
+            } else if let data = value as? NSData {
+                value = NSKeyedUnarchiver.unarchiveObjectWithData(data)
             }
-        } else {
-            print("This is a transformable attribute. For now, it's being ignored, but should be transformed")
         }
         
         return value

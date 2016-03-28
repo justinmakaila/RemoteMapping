@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="CustomKeyAbstractEntity" isAbstract="YES" syncable="YES">
         <userInfo>
             <entry key="primaryKey.local" value="customPrimaryKey"/>
@@ -32,6 +32,19 @@
             </userInfo>
         </attribute>
     </entity>
+    <entity name="User" representedClassName=".User" syncable="YES">
+        <attribute name="age" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="birthdate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="favoriteWordsValue" optional="YES" attributeType="Binary" syncable="YES">
+            <userInfo>
+                <entry key="remotePropertyName" value="favoriteWords"/>
+            </userInfo>
+        </attribute>
+        <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="friends" inverseEntity="User" syncable="YES"/>
+        <relationship name="friends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
+    </entity>
     <elements>
         <element name="CustomKeyAbstractEntity" positionX="18" positionY="54" width="128" height="45"/>
         <element name="CustomKeyEntity" positionX="36" positionY="72" width="128" height="45"/>
@@ -39,5 +52,6 @@
         <element name="CustomRemotePrimaryKeyEntity" positionX="-18" positionY="27" width="128" height="45"/>
         <element name="EmptyEntity" positionX="0" positionY="36" width="128" height="45"/>
         <element name="RemoteObjectEntity" positionX="-9" positionY="27" width="128" height="90"/>
+        <element name="User" positionX="-9" positionY="36" width="128" height="150"/>
     </elements>
 </model>
