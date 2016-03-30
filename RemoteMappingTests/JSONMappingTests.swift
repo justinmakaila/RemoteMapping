@@ -24,19 +24,30 @@ class JSONMappingTests: RemoteMappingTestCase {
         user.birthdate = twentyThreeYearsAgo
         user.age = 23
         user.height = 175.25
+        user.detail = "dude"
         
         self.user = user
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesValidJSONRepresentation() {
-        let justinJSON = user.toJSON()
+        let otherUser: User = insertEntity(userEntityDescription)
+        otherUser.name = "Paige"
+        otherUser.favoriteWords = ["none", "zero", "nada"]
+        otherUser.birthdate = user.birthdate
+        otherUser.age = 21
+        otherUser.height = 160
+        otherUser.detail = "chick"
+
+        user.significantOther = otherUser
         
-        XCTAssertTrue(justinJSON["name"] is String)
-        let name = justinJSON["name"] as! String
+        let userJSON = user.toJSON()
+        
+        XCTAssertTrue(userJSON["name"] is String)
+        let name = userJSON["name"] as! String
         XCTAssertTrue(name == user.name)
         
-        XCTAssertTrue(justinJSON["favoriteWords"] is NSArray)
-        let favoriteWords = justinJSON["favoriteWords"] as? [String] ?? []
+        XCTAssertTrue(userJSON["favoriteWords"] is NSArray)
+        let favoriteWords = userJSON["favoriteWords"] as? [String] ?? []
         for word in user.favoriteWords {
             XCTAssertTrue(favoriteWords.contains(word))
         }
@@ -46,13 +57,22 @@ class JSONMappingTests: RemoteMappingTestCase {
         //let birthdate = NSDate(ISO8601String: justinJSON["birthdate"] as! String)!
         //XCTAssertTrue(birthdate == justin.birthdate)
         
-        XCTAssertTrue(justinJSON["age"] is NSNumber)
-        let age = justinJSON["age"] as! NSNumber
+        XCTAssertTrue(userJSON["age"] is NSNumber)
+        let age = userJSON["age"] as! NSNumber
         XCTAssertTrue(Int16(age.integerValue) == user.age)
         
-        XCTAssertTrue(justinJSON["height"] is NSNumber)
-        let height = justinJSON["height"] as! NSNumber
+        XCTAssertTrue(userJSON["height"] is NSNumber)
+        let height = userJSON["height"] as! NSNumber
         XCTAssertTrue(height == user.height)
+        
+        XCTAssertTrue(userJSON["userDetail"] is String)
+        let detail = userJSON["userDetail"] as! String
+        XCTAssertTrue(detail == user.detail)
+        
+        XCTAssertTrue(userJSON["oneWayRelationship"] is NSDictionary)
+        let otherUserDictionary = userJSON["oneWayRelationship"] as! NSDictionary
+        XCTAssertTrue(otherUserDictionary == otherUser.toJSON())
+        
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesChangedJSONRepresentation() {

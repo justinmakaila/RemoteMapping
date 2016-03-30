@@ -35,28 +35,45 @@ public extension NSManagedObject {
     private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Array) -> JSONObject {
         var json = JSONObject()
         
+        /// For each property descriptions...
         for propertyDescription in properties {
+            /// If it's an attribute description...
             if let attributeDescription = propertyDescription as? NSAttributeDescription {
+                /// Get the remote key and a value for the attribute description
                 let remoteKey = attributeDescription.remotePropertyName
                 let value = valueForAttribueDescription(attributeDescription)
                 
+                /// Update `json`
                 json[remoteKey] = value
+                
+            /// If the property is a relationship description...
             } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription where (relationshipType != .None) {
+                /// A valid relationship is one which does not go back up the relationship heirarchy...
+                /// TODO: This condition could be much clearer
                 let isValidRelationship = !(parent != nil && (parent?.entity == relationshipDescription.destinationEntity) && !relationshipDescription.toMany)
                 
                 if isValidRelationship {
-                    let relationshipName = relationshipDescription.remotePropertyName
-                    if let relationships = valueForKey(relationshipName) {
+                    /// Get the relationship names
+                    let localRelationshipName = relationshipDescription.name
+                    let remoteRelationshipName = relationshipDescription.remotePropertyName
+                    
+                    /// If there are relationships at `localRelationshipName`
+                    if let relationships = valueForKey(localRelationshipName) {
+                        /// If the relationship is to a single object...
                         if let destinationObject = relationships as? NSManagedObject {
-                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: relationshipName, relationshipType: relationshipType, parent: self)
+                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
                             
                             json += toOneRelationshipAttributes
+                            
+                        /// If the relationship is to a set of objects...
                         } else if let relationshipSet = relationships as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: relationshipName, relationshipType: relationshipType, parent: self)
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
                             
                             json += toManyRelationshipAttributes
+                            
+                        /// If the relationship is to an ordered set of objects...
                         } else if let relationshipSet = (relationships as? NSOrderedSet)?.set as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: relationshipName, relationshipType: relationshipType, parent: self)
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
                             
                             json += toManyRelationshipAttributes
                         }

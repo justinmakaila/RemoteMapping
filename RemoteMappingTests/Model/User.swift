@@ -35,6 +35,9 @@ public final class User: NSManagedObject {
     @NSManaged
     public var name: String
     
+    @NSManaged
+    public var detail: String
+    
     /// MARK: Relationships
     
     @NSManaged
@@ -42,4 +45,7 @@ public final class User: NSManagedObject {
     
     @NSManaged
     public var followers: Set<User>
+    
+    @NSManaged
+    public var significantOther: User
 }
