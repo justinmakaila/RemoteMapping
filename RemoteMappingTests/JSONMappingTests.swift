@@ -12,6 +12,7 @@ class JSONMappingTests: RemoteMappingTestCase {
     var userEntityDescription: NSEntityDescription!
     var user: User!
     var friend: User!
+    var significantOther: User!
     
     override func setUp() {
         super.setUp()
@@ -26,10 +27,6 @@ class JSONMappingTests: RemoteMappingTestCase {
         user.height = 175.25
         user.detail = "dude"
         
-        self.user = user
-    }
-    
-    func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesValidJSONRepresentation() {
         let otherUser: User = insertEntity(userEntityDescription)
         otherUser.name = "Paige"
         otherUser.favoriteWords = ["none", "zero", "nada"]
@@ -37,9 +34,14 @@ class JSONMappingTests: RemoteMappingTestCase {
         otherUser.age = 21
         otherUser.height = 160
         otherUser.detail = "chick"
-
+        
         user.significantOther = otherUser
         
+        self.user = user
+        self.significantOther = otherUser
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesValidJSONRepresentation() {
         let userJSON = user.toJSON()
         
         XCTAssertTrue(userJSON["name"] is String)
@@ -69,9 +71,9 @@ class JSONMappingTests: RemoteMappingTestCase {
         let detail = userJSON["userDetail"] as! String
         XCTAssertTrue(detail == user.detail)
         
-        XCTAssertTrue(userJSON["oneWayRelationship"] is NSDictionary)
-        let otherUserDictionary = userJSON["oneWayRelationship"] as! NSDictionary
-        XCTAssertTrue(otherUserDictionary == otherUser.toJSON())
+        XCTAssertTrue(userJSON["significantOther"] is NSDictionary)
+        let otherUserDictionary = userJSON["significantOther"] as! NSDictionary
+        XCTAssertTrue(otherUserDictionary == self.significantOther.toJSON())
         
     }
     
@@ -85,5 +87,23 @@ class JSONMappingTests: RemoteMappingTestCase {
         XCTAssertTrue(changedJSON.count == 1)
         XCTAssertTrue(changedJSON["name"] != nil)
         XCTAssertTrue(changedJSON["name"] as! String == newUser.name)
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_EmbedsRelationships() {
+        let userJSON = user.toJSON(relationshipType: .Embedded)
+        let significantOtherJSON = userJSON["significantOther"]
+        XCTAssertTrue(significantOtherJSON is NSDictionary)
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_ReferencesRelationships() {
+        let userJSON = user.toJSON(relationshipType: .Reference)
+        let significantOtherJSON = userJSON["significantOther"]
+        XCTAssertTrue(significantOtherJSON is String)
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_NoRelationships() {
+        let userJSON = user.toJSON(relationshipType: .None)
+        let significantOtherJSON = userJSON["significantOther"]
+        XCTAssertNil(significantOtherJSON)
     }
 }

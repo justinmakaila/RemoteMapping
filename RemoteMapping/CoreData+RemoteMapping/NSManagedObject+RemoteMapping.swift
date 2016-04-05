@@ -10,29 +10,43 @@ func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right:
 
 public typealias JSONObject = [String: AnyObject]
 
-public enum RelationshipType: Int {
+public enum RelationshipType {
+    /// Don't include any relationship
     case None
-    case Array
+    /// Include embedded objects
+    case Embedded
+    /// Include refrences by primary key
+    case Reference
 }
 
 /// To JSON methods
 
 public extension NSManagedObject {
+    /// The value for `localPrimaryKeyName`.
+    public var localPrimaryKey: AnyObject? {
+        return valueForKey(entity.localPrimaryKeyName)
+    }
+    
+    /// The value for `remotePrimaryKeyName`.
+    public var remotePrimaryKey: AnyObject? {
+        return valueForKey(entity.remotePrimaryKeyName)
+    }
+    
     /// Serializes a `NSManagedObject` to a JSONObject, as specified by the RemoteMapping implementation
-    func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Array) -> JSONObject {
+    func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
         return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject representing only the changed properties, as specified by the RemoteMapping implementation
-    func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Array) -> JSONObject {
+    func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
-        let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
+        let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }.filter { !excludeKeys.contains($0.name) }
         
         return jsonObjectForProperties(remoteProperties, parent: parent, relationshipType: relationshipType)
     }
     
     /// TODO: It'd be really cool if `remotePropertyName` could use dot syntax to represent nested objects
-    private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Array) -> JSONObject {
+    private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
         var json = JSONObject()
         
         /// For each property descriptions...
@@ -87,7 +101,16 @@ public extension NSManagedObject {
     
     private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
         var relationshipAttributes = JSONObject()
-        let attributes = object.toJSON(parent, relationshipType: relationshipType)
+        var attributes: AnyObject?
+        
+        switch relationshipType {
+        case .Embedded:
+            attributes = object.toJSON(parent, relationshipType: relationshipType)
+        case .Reference:
+            attributes = object.remotePrimaryKey
+        default:
+            break
+        }
         
         relationshipAttributes[relationshipName] = attributes
         
@@ -207,6 +230,7 @@ extension NSManagedObject {
         
         return value
     }
+    
     func reservedKeys() -> [String] {
         return NSManagedObject.reservedAttributes()
     }

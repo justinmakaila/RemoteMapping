@@ -32,16 +32,6 @@ extension NSEntityDescription: RemoteEntityType {
         return RemoteMapping.Key.DefaultLocalPrimaryKey.rawValue
     }
     
-    /// The value for `localPrimaryKeyName`.
-    public var localPrimaryKey: AnyObject? {
-        return valueForKey(localPrimaryKeyName)
-    }
-    
-    /// The value for `remotePrimaryKeyName`.
-    public var remotePrimaryKey: AnyObject? {
-        return valueForKey(remotePrimaryKeyName)
-    }
-    
     /// The properties represented on the remote.
     public var remoteProperties: [NSPropertyDescription] {
         return properties.filter { !$0.remoteShouldIgnore }

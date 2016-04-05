@@ -47,5 +47,5 @@ public final class User: NSManagedObject {
     public var followers: Set<User>
     
     @NSManaged
-    public var significantOther: User
+    public var significantOther: User?
 }
