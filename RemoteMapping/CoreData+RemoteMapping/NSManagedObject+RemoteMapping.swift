@@ -10,18 +10,18 @@ func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right:
 
 public typealias JSONObject = [String: AnyObject]
 
-public enum RelationshipType {
+public enum RelationshipType: String {
     /// Don't include any relationship
-    case None
+    case None = "none"
     /// Include embedded objects
-    case Embedded
+    case Embedded = "embedded"
     /// Include refrences by primary key
-    case Reference
+    case Reference = "reference"
 }
 
 /// To JSON methods
 
-public extension NSManagedObject {
+extension NSManagedObject {
     /// The value for `localPrimaryKeyName`.
     public var localPrimaryKey: AnyObject? {
         return valueForKey(entity.localPrimaryKeyName)
@@ -62,6 +62,8 @@ public extension NSManagedObject {
                 
             /// If the property is a relationship description...
             } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription where (relationshipType != .None) {
+                let relationshipMappingType = relationshipDescription.relationshipMapping ?? relationshipType
+                
                 /// A valid relationship is one which does not go back up the relationship heirarchy...
                 /// TODO: This condition could be much clearer
                 let isValidRelationship = !(parent != nil && (parent?.entity == relationshipDescription.destinationEntity) && !relationshipDescription.toMany)
@@ -75,19 +77,19 @@ public extension NSManagedObject {
                     if let relationships = valueForKey(localRelationshipName) {
                         /// If the relationship is to a single object...
                         if let destinationObject = relationships as? NSManagedObject {
-                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
+                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
                             
                             json += toOneRelationshipAttributes
                             
                         /// If the relationship is to a set of objects...
                         } else if let relationshipSet = relationships as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
                             
                             json += toManyRelationshipAttributes
                             
                         /// If the relationship is to an ordered set of objects...
                         } else if let relationshipSet = (relationships as? NSOrderedSet)?.set as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipType, parent: self)
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
                             
                             json += toManyRelationshipAttributes
                         }
@@ -100,37 +102,26 @@ public extension NSManagedObject {
     }
     
     private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
-        var relationshipAttributes = JSONObject()
-        var attributes: AnyObject?
-        
-        switch relationshipType {
-        case .Embedded:
-            attributes = object.toJSON(parent, relationshipType: relationshipType)
-        case .Reference:
-            attributes = object.remotePrimaryKey
-        default:
-            break
-        }
-        
-        relationshipAttributes[relationshipName] = attributes
-        
-        return relationshipAttributes
+        return [
+            relationshipName: jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType)
+        ]
     }
     
     private func jsonAttributesForToManyRelationship(objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
-        var relationshipAttributes = JSONObject()
-        var relationshipArray: [JSONObject] = []
-        for object in objects {
-            let attributes = object.toJSON(parent, relationshipType: relationshipType)
-            
-            if attributes.count > 0 {
-                relationshipArray.append(attributes)
-            }
+        return [
+            relationshipName: objects.map { jsonAttributesForObject($0, parent: parent, relationshipType: relationshipType) }
+        ]
+    }
+    
+    private func jsonAttributesForObject(object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType) -> AnyObject {
+        switch relationshipType {
+        case .Embedded:
+            return object.toJSON(parent, relationshipType: relationshipType)
+        case .Reference:
+            return object.remotePrimaryKey ?? NSNull()
+        default:
+            return NSNull()
         }
-        
-        relationshipAttributes[relationshipName] = relationshipArray
-        
-        return relationshipAttributes
     }
 }
 
