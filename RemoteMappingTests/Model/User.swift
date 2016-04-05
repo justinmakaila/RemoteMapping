@@ -41,11 +41,8 @@ public final class User: NSManagedObject {
     /// MARK: Relationships
     
     @NSManaged
-    public var friends: Set<User>
-    
-    @NSManaged
-    public var followers: Set<User>
-    
-    @NSManaged
     public var significantOther: User?
+    
+    @NSManaged
+    public var bestFriend: User?
 }

@@ -36,6 +36,7 @@ class JSONMappingTests: RemoteMappingTestCase {
         otherUser.detail = "chick"
         
         user.significantOther = otherUser
+        user.bestFriend = otherUser
         
         self.user = user
         self.significantOther = otherUser
@@ -105,5 +106,12 @@ class JSONMappingTests: RemoteMappingTestCase {
         let userJSON = user.toJSON(relationshipType: .None)
         let significantOtherJSON = userJSON["significantOther"]
         XCTAssertNil(significantOtherJSON)
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_OverridesRelationshipMapping() {
+        let userJSON = user.toJSON(relationshipType: .Embedded)
+        let bestFriendJSON = userJSON["bestFriend"]
+        XCTAssertTrue(bestFriendJSON is String)
+        XCTAssertTrue((bestFriendJSON as! String) == user.bestFriend!.name)
     }
 }

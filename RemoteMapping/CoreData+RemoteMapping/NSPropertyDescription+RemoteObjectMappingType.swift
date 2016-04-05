@@ -16,4 +16,16 @@ extension NSPropertyDescription: RemoteObjectMappingType {
     public var remoteShouldIgnore: Bool {
         return userInfo?[RemoteMapping.Key.Ignore.rawValue] != nil
     }
+    
+    /// The default relationship mapping.
+    ///
+    /// This overrides
+    public var relationshipMapping: RelationshipType? {
+        guard let relationshipMappingValue = userInfo?[RemoteMapping.Key.RelationshipMapping.rawValue] as? String
+        else {
+            return nil
+        }
+        
+        return RelationshipType(rawValue: relationshipMappingValue)
+    }
 }

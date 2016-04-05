@@ -7,6 +7,7 @@ public struct RemoteMapping {
         case DefaultLocalPrimaryKey = "remoteID"
         
         case PropertyMapping = "remotePropertyName"
+        case RelationshipMapping = "relationshipMapping"
         case Ignore = "remoteShouldIgnore"
     }
 }

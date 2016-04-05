@@ -4,4 +4,6 @@ public protocol RemoteObjectMappingType {
     var remotePropertyName: String { get }
     /// Whether or not the property should be ignored.
     var remoteShouldIgnore: Bool { get }
+    /// The relationship mapping type to be used for a specific property
+    var relationshipMapping: RelationshipType? { get }
 }
