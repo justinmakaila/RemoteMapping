@@ -21,14 +21,14 @@ public enum RelationshipType: String {
 
 /// To JSON methods
 
-extension NSManagedObject {
+public extension NSManagedObject {
     /// The value for `localPrimaryKeyName`.
-    public var localPrimaryKey: AnyObject? {
+    var localPrimaryKey: AnyObject? {
         return valueForKey(entity.localPrimaryKeyName)
     }
     
     /// The value for `remotePrimaryKeyName`.
-    public var remotePrimaryKey: AnyObject? {
+    var remotePrimaryKey: AnyObject? {
         return valueForKey(entity.remotePrimaryKeyName)
     }
     
