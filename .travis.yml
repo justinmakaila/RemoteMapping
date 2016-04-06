@@ -1,11 +1,11 @@
 language: objective-c
 osx_image: xcode7.3
 xcode_sdk: iphonesimulator9.3
-xcode_workspace: GraphQL.xcworkspace
-xcode_scheme: GraphQLTests
+xcode_project: RemoteMapping.xcodeproj
+xcode_scheme: RemoteMappingTests
 env:
   global:
-  - FRAMEWORK_NAME=GraphQL
+  - FRAMEWORK_NAME=RemoteMapping
 before_install:
 - brew update
 - brew install carthage
