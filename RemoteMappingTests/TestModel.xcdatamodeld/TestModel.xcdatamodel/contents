@@ -58,7 +58,7 @@
             </userInfo>
         </relationship>
         <userInfo>
-            <entry key="remotePrimaryKey" value="name"/>
+            <entry key="localPrimaryKey" value="name"/>
         </userInfo>
     </entity>
     <elements>

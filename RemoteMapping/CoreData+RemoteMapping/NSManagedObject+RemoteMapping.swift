@@ -23,13 +23,8 @@ public enum RelationshipType: String {
 
 public extension NSManagedObject {
     /// The value for `localPrimaryKeyName`.
-    var localPrimaryKey: AnyObject? {
+    var primaryKey: AnyObject? {
         return valueForKey(entity.localPrimaryKeyName)
-    }
-    
-    /// The value for `remotePrimaryKeyName`.
-    var remotePrimaryKey: AnyObject? {
-        return valueForKey(entity.remotePrimaryKeyName)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject, as specified by the RemoteMapping implementation
@@ -118,7 +113,7 @@ public extension NSManagedObject {
         case .Embedded:
             return object.toJSON(parent, relationshipType: relationshipType)
         case .Reference:
-            return object.remotePrimaryKey ?? NSNull()
+            return object.primaryKey ?? NSNull()
         default:
             return NSNull()
         }
