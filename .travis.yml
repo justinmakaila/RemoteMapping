@@ -1,9 +1,20 @@
-language: swift
-xcode_project: GraphQL.xcodeproj # path to your xcodeproj folder
+language: objective-c
+osx_image: xcode7.3
+xcode_sdk: iphonesimulator9.3
+xcode_workspace: GraphQL.xcworkspace
 xcode_scheme: GraphQLTests
-before_install: 
-  - brew update
-  - brew upgrade xctool
-  - brew install carthage
-  - carthage bootstrap --verbose
+env:
+  global:
+  - FRAMEWORK_NAME=GraphQL
+before_install:
+- brew update
+- brew install carthage
+before_script:
+- carthage bootstrap
+before_deploy:
+- carthage build --no-skip-current
+- carthage archive $FRAMEWORK_NAME
 
+notifications:
+  slack:
+    secure: ErJJbjjQqsPXqwvoNpBwS7Nuojeto1ogFvcwpBLf/GBgA+cNXrgyuQ+aP2U4X/bLWnB9dtzau+zstegwdXn/7e38lZ8/DPJETxJ0+cEO0O/Q1xdUnyR3I4vEiRfF8COXWqLWKLvoGohWXP9fa0H0vCdtbkIrJHSzhjDT5oWGM1Uhsarh08DTfg//Uvte53L5cD0TUjBROO13hEnCkNBNYKUu5wevNrMOCJ/vXfEX28yIZ4QKLHusWqTkQoLJHXlEytQYIN4jhhgTu3BJ80AQrygPdhduFPrI40I3iKi4Y15k7GjlQhdolLIieJFxF9kDs3TFeFYo8JKbrRyPRvhu1JKb+i9wXWj8rVgHWGt2in7kZlNYmyKGmVGz1pZaFEqSONzxwu5jG54aDk1Yc8f3k3DA9H3F/WlqJWQ+Ya+kc8eW7lC8E+M+jpqiuJ3MtBtj/RSmqea58VNnW0iuDybuMMD23PNnGZdnqUQ33Fo25tVXbgvm6iBCOdo6V4zmdXkDr3C3OKoQgn9CtwI4UtuLJXFjuiJy/dJcN0aqMGp0eDEIqg5Wt1sXgcC0Xv5JMP594yTmxCddNc1oLfWJZy2h0qsIz76rI3MDWdDZSl28nh1SToqRAl5/oWtM2sT+22ienbQfneNOMHlZlGbScZ0Gp8BxJOZU8pfn4C5oz7OWAwM=
