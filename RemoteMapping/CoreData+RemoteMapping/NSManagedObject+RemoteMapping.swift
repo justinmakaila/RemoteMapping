@@ -22,9 +22,19 @@ public enum RelationshipType: String {
 /// To JSON methods
 
 public extension NSManagedObject {
+    /// The receiver's local primary key
+    var localPrimaryKeyName: String {
+        return entity.localPrimaryKeyName
+    }
+    
+    /// The receiver's remote primary key
+    var remotePrimaryKeyName: String {
+        return entity.remotePrimaryKeyName
+    }
+    
     /// The value for `localPrimaryKeyName`.
     var primaryKey: AnyObject? {
-        return valueForKey(entity.localPrimaryKeyName)
+        return valueForKey(localPrimaryKeyName)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject, as specified by the RemoteMapping implementation
@@ -96,18 +106,22 @@ public extension NSManagedObject {
         return json
     }
     
+    /// Returns the JSON attributes for a to-one relationship.
     private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
         return [
             relationshipName: jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType)
         ]
     }
     
+    /// Returns the JSON attributes for a to-many relationship.
+    /// Internally maps `objects` to `jsonAttributesForObject`
     private func jsonAttributesForToManyRelationship(objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
         return [
             relationshipName: objects.map { jsonAttributesForObject($0, parent: parent, relationshipType: relationshipType) }
         ]
     }
     
+    /// Transforms an object to JSON, using the supplied `relationshipType`.
     private func jsonAttributesForObject(object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType) -> AnyObject {
         switch relationshipType {
         case .Embedded:

@@ -29,6 +29,8 @@ extension NSEntityDescription: RemoteEntityType {
             return superentityLocalPrimaryKey
         }
         
+        /// TODO: Decide if this should provide a default or fail
+        //fatalError("No local primary key was set. You must add `localPrimaryKey` to this `NSEntityDescription`s `userInfo` dictionary.")
         return RemoteMapping.Key.DefaultLocalPrimaryKey.rawValue
     }
     
@@ -66,5 +68,20 @@ extension NSEntityDescription: RemoteEntityType {
                 
                 return relationships
         }
+    }
+    
+    public var remoteAttributes: [NSAttributeDescription] {
+        return remoteProperties.flatMap { $0 as? NSAttributeDescription }
+    }
+    
+    public func remoteAttributesByName(useLocalNames: Bool = false) -> [String: NSAttributeDescription] {
+        return remoteAttributes
+            .reduce([String: NSAttributeDescription]()) { remoteAttributesByName, attributeDescription in
+                let key = (useLocalNames) ? attributeDescription.name : attributeDescription.remotePropertyName
+                var attributes = remoteAttributesByName
+                attributes[key] = attributeDescription
+                
+                return attributes
+            }
     }
 }

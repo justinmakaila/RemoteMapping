@@ -38,8 +38,17 @@ class JSONMappingTests: RemoteMappingTestCase {
         user.significantOther = otherUser
         user.bestFriend = otherUser
         
+        let friend: User = insertEntity(userEntityDescription)
+        friend.name = "Dan"
+        friend.favoriteWords = []
+        friend.birthdate = user.birthdate
+        friend.age = 23
+        friend.height = 173
+        friend.detail = "startup fool"
+        
         self.user = user
         self.significantOther = otherUser
+        self.friend = friend
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesValidJSONRepresentation() {
@@ -75,7 +84,6 @@ class JSONMappingTests: RemoteMappingTestCase {
         XCTAssertTrue(userJSON["significantOther"] is NSDictionary)
         let otherUserDictionary = userJSON["significantOther"] as! NSDictionary
         XCTAssertTrue(otherUserDictionary == self.significantOther.toJSON())
-        
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesChangedJSONRepresentation() {
