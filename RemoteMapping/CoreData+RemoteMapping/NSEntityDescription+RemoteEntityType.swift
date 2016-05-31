@@ -6,11 +6,11 @@ extension NSEntityDescription: RemoteEntityType {
     ///
     /// Defaults to `localPrimaryKeyName` if none provided.
     public var remotePrimaryKeyName: String {
-        if let remotePrimaryKey = userInfo?[RemoteMapping.Key.RemotePrimaryKey.rawValue] as? String {
-            return remotePrimaryKey
-        }
+        let remotePrimaryKeyValue = RemoteMapping.Key.RemotePrimaryKey.rawValue
         
-        if let superentityRemotePrimaryKey = superentity?.userInfo?[RemoteMapping.Key.RemotePrimaryKey.rawValue] as? String {
+        if let remotePrimaryKey = userInfo?[remotePrimaryKeyValue] as? String {
+            return remotePrimaryKey
+        } else if let superentityRemotePrimaryKey = superentity?.remotePrimaryKeyName {
             return superentityRemotePrimaryKey
         }
         
