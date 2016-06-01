@@ -50,6 +50,10 @@ extension NSEntityDescription: RemoteEntityType {
         }
     }
     
+    public var relationships: [NSRelationshipDescription] {
+        return properties.flatMap { $0 as? NSRelationshipDescription }
+    }
+    
     /// The relationships represented on the remote.
     public var remoteRelationships: [NSRelationshipDescription] {
         return remoteProperties.flatMap { $0 as? NSRelationshipDescription }
@@ -66,6 +70,10 @@ extension NSEntityDescription: RemoteEntityType {
                 
                 return relationships
         }
+    }
+    
+    public var attributes: [NSAttributeDescription] {
+        return properties.flatMap { $0 as? NSAttributeDescription }
     }
     
     public var remoteAttributes: [NSAttributeDescription] {
