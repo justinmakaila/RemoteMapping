@@ -19,8 +19,8 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
     /// which provides a custom remote property name of "remoteProperty".
     func test_RemoteObjectMappingType_ProvidesCustomPropertyNames() {
         guard let customRemotePropertyDescription = entity.propertiesByName["customRemoteProperty"]
-            else {
-                fatalError("Could not find property")
+        else {
+            fatalError("Could not find property")
         }
         
         let remotePropertyName = customRemotePropertyDescription.remotePropertyName
@@ -32,8 +32,8 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
     /// which equals the property description's name.
     func test_RemoteObjectMappingType_ProvidesDefaultPropertyNames() {
         guard let defaultRemotePropertyDescription = entity.propertiesByName["defaultRemoteProperty"]
-            else {
-                fatalError("Could not find property")
+        else {
+            fatalError("Could not find property")
         }
         
         let remotePropertyName = defaultRemotePropertyDescription.remotePropertyName
@@ -46,8 +46,8 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
     /// which should not exist in a remote representation.
     func test_RemoteObjectMappingType_ProvidesIgnoredProperties() {
         guard let remoteShouldIgnorePropertyDescription = entity.propertiesByName["remoteShouldIgnore"]
-            else {
-                fatalError("Could not find property")
+        else {
+            fatalError("Could not find property")
         }
         
         let shouldIgnore = remoteShouldIgnorePropertyDescription.remoteShouldIgnore

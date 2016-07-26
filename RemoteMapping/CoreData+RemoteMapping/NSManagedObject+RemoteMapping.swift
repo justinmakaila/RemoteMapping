@@ -10,6 +10,7 @@ func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right:
 
 public typealias JSONObject = [String: AnyObject]
 
+/// Represents relationships for JSON serialization
 public enum RelationshipType: String {
     /// Don't include any relationship
     case None = "none"
@@ -20,7 +21,6 @@ public enum RelationshipType: String {
 }
 
 /// To JSON methods
-
 public extension NSManagedObject {
     /// The receiver's local primary key
     var localPrimaryKeyName: String {
@@ -38,24 +38,45 @@ public extension NSManagedObject {
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject, as specified by the RemoteMapping implementation
+    ///
+    /// - Parameters:
+    ///     - parent: The parent of the object.
+    ///     - relationshipType: Flag indicating what type of relationships to use.
+    ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
+    ///
     func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
-        return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType)
+        return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject representing only the changed properties, as specified by the RemoteMapping implementation
+    ///
+    /// - Parameters:
+    ///     - parent: The parent of the object.
+    ///     - relationshipType: Flag indicating what type of relationships to use.
+    ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
+    ///
     func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
-        let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }.filter { !excludeKeys.contains($0.name) }
+        let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
         
-        return jsonObjectForProperties(remoteProperties, parent: parent, relationshipType: relationshipType)
+        return jsonObjectForProperties(remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys)
     }
     
-    /// TODO: It'd be really cool if `remotePropertyName` could use dot syntax to represent nested objects
+    /// Returns a JSON object.
+    ///
+    /// - Parameters:
+    ///     - properties: The properties to use for serialization.
+    ///     - parent: The parent of the object.
+    ///     - relationshipType: Flag indicating what type of relationships to use.
+    ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
+    ///
     private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
         var json = JSONObject()
         
+        let jsonProperties = properties.filter { !excludeKeys.contains($0.name) }
+        
         /// For each property descriptions...
-        for propertyDescription in properties {
+        for propertyDescription in jsonProperties {
             /// If it's an attribute description...
             if let attributeDescription = propertyDescription as? NSAttributeDescription {
                 /// Get the remote key and a value for the attribute description
@@ -146,7 +167,9 @@ extension NSManagedObject {
     }
     
     /// Returns the value for `attributeDescription` if it's `attributeType` is not a "Transformable" attribute.
-    /// !!!: All NSDate attributes are transformed to ISO-8601
+    ///
+    /// - Note:
+    ///     All NSDate attributes are transformed to ISO-8601
     public func valueForAttribueDescription(attributeDescription: NSAttributeDescription) -> AnyObject? {
         var value: AnyObject?
         
@@ -163,7 +186,7 @@ extension NSManagedObject {
         return value
     }
     
-    /// Gets a `NSAttributeDescription` matching `key`, or nil
+    /// Gets a `NSAttributeDescription` matching `key`, or nil.
     public func attributeDescriptionForRemoteKey(key: String) -> NSAttributeDescription? {
         var foundAttributeDescription: NSAttributeDescription?
         
@@ -180,7 +203,7 @@ extension NSManagedObject {
         return foundAttributeDescription
     }
     
-    /// Returns the value for the attribute description, transformed from the remote value.
+    /// Returns a valid JSON value for the attribute description by transforming from the remote value.
     public func valueForAttributeDescription(attributeDescription: NSAttributeDescription, usingRemoteValue remoteValue: AnyObject) -> AnyObject? {
         var value: AnyObject?
         

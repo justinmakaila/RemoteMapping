@@ -17,8 +17,8 @@ class RemoteMappingTestCase: XCTestCase {
     
     func entityForName(name: String) -> NSEntityDescription {
         guard let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: self.managedObjectContext)
-            else {
-                fatalError("Could not load entity")
+        else {
+            fatalError("Could not load entity")
         }
         
         return entity
@@ -36,9 +36,9 @@ class RemoteMappingTestCase: XCTestCase {
     func setupManagedObjectContext() -> NSManagedObjectContext {
         // Load the model from `Wellth.xcdatamodeld`
         guard let modelURL = NSBundle(forClass: RemoteMappingTestCase.self).URLForResource("TestModel", withExtension: "momd"),
-            let model = NSManagedObjectModel(contentsOfURL: modelURL)
-            else {
-                fatalError("Model not found")
+            model = NSManagedObjectModel(contentsOfURL: modelURL)
+        else {
+            fatalError("Model not found")
         }
         
         // Create a persistent store coordinator for the model

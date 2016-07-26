@@ -122,4 +122,11 @@ class JSONMappingTests: RemoteMappingTestCase {
         XCTAssertTrue(bestFriendJSON is String)
         XCTAssertTrue((bestFriendJSON as! String) == user.bestFriend!.name)
     }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_ExcludeKeysFromJSON() {
+        let userJSON = user.toJSON(relationshipType: .None, excludeKeys: ["birthdate"])
+        let birthdateJSON = userJSON["birthdate"]
+        
+        XCTAssertTrue(birthdateJSON == nil)
+    }
 }
