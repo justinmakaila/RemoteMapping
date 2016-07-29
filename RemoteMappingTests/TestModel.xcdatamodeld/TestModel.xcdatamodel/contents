@@ -47,16 +47,7 @@
         </attribute>
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="bestFriend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES">
-            <userInfo>
-                <entry key="relationshipMapping" value="reference"/>
-            </userInfo>
-        </relationship>
-        <relationship name="significantOther" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES">
-            <userInfo>
-                <entry key="remotePropertyName" value="significantOther"/>
-            </userInfo>
-        </relationship>
+        <relationship name="bestFriend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="bestFriend" inverseEntity="User" syncable="YES"/>
         <userInfo>
             <entry key="localPrimaryKey" value="name"/>
         </userInfo>
@@ -68,6 +59,6 @@
         <element name="CustomRemotePrimaryKeyEntity" positionX="-18" positionY="27" width="128" height="45"/>
         <element name="EmptyEntity" positionX="0" positionY="36" width="128" height="45"/>
         <element name="RemoteObjectEntity" positionX="-9" positionY="27" width="128" height="90"/>
-        <element name="User" positionX="-9" positionY="36" width="128" height="165"/>
+        <element name="User" positionX="-9" positionY="36" width="128" height="150"/>
     </elements>
 </model>

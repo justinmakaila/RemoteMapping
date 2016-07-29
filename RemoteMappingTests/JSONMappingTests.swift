@@ -12,7 +12,6 @@ class JSONMappingTests: RemoteMappingTestCase {
     var userEntityDescription: NSEntityDescription!
     var user: User!
     var friend: User!
-    var significantOther: User!
     
     override func setUp() {
         super.setUp()
@@ -27,27 +26,17 @@ class JSONMappingTests: RemoteMappingTestCase {
         user.height = 175.25
         user.detail = "dude"
         
-        let otherUser: User = insertEntity(userEntityDescription)
-        otherUser.name = "Paige"
-        otherUser.favoriteWords = ["none", "zero", "nada"]
-        otherUser.birthdate = user.birthdate
-        otherUser.age = 21
-        otherUser.height = 160
-        otherUser.detail = "chick"
-        
-        user.significantOther = otherUser
-        user.bestFriend = otherUser
-        
         let friend: User = insertEntity(userEntityDescription)
-        friend.name = "Dan"
-        friend.favoriteWords = []
+        friend.name = "Paige"
+        friend.favoriteWords = ["none", "zero", "nada"]
         friend.birthdate = user.birthdate
-        friend.age = 23
-        friend.height = 173
-        friend.detail = "startup fool"
+        friend.age = 21
+        friend.height = 160
+        friend.detail = "chick"
+        
+        user.bestFriend = friend
         
         self.user = user
-        self.significantOther = otherUser
         self.friend = friend
     }
     
@@ -81,9 +70,11 @@ class JSONMappingTests: RemoteMappingTestCase {
         let detail = userJSON["userDetail"] as! String
         XCTAssertTrue(detail == user.detail)
         
-        XCTAssertTrue(userJSON["significantOther"] is NSDictionary)
-        let otherUserDictionary = userJSON["significantOther"] as! NSDictionary
-        XCTAssertTrue(otherUserDictionary == self.significantOther.toJSON())
+        XCTAssertTrue(userJSON["bestFriend"] is NSDictionary)
+        let bestFriend = userJSON["bestFriend"] as! NSDictionary
+        let bestFriendJSON = user.bestFriend?.toJSON(user, relationshipType: .Reference)
+        XCTAssertTrue(bestFriend == bestFriendJSON)
+        
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ProvidesChangedJSONRepresentation() {
@@ -100,27 +91,20 @@ class JSONMappingTests: RemoteMappingTestCase {
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_EmbedsRelationships() {
         let userJSON = user.toJSON(relationshipType: .Embedded)
-        let significantOtherJSON = userJSON["significantOther"]
+        let significantOtherJSON = userJSON["bestFriend"]
         XCTAssertTrue(significantOtherJSON is NSDictionary)
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ReferencesRelationships() {
         let userJSON = user.toJSON(relationshipType: .Reference)
-        let significantOtherJSON = userJSON["significantOther"]
+        let significantOtherJSON = userJSON["bestFriend"]
         XCTAssertTrue(significantOtherJSON is String)
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_NoRelationships() {
         let userJSON = user.toJSON(relationshipType: .None)
-        let significantOtherJSON = userJSON["significantOther"]
+        let significantOtherJSON = userJSON["bestFriend"]
         XCTAssertNil(significantOtherJSON)
-    }
-    
-    func test_NSManagedObjectFromRemoteMappingEntityDescription_OverridesRelationshipMapping() {
-        let userJSON = user.toJSON(relationshipType: .Embedded)
-        let bestFriendJSON = userJSON["bestFriend"]
-        XCTAssertTrue(bestFriendJSON is String)
-        XCTAssertTrue((bestFriendJSON as! String) == user.bestFriend!.name)
     }
     
     func test_NSManagedObjectFromRemoteMappingEntityDescription_ExcludeKeysFromJSON() {
@@ -128,5 +112,20 @@ class JSONMappingTests: RemoteMappingTestCase {
         let birthdateJSON = userJSON["birthdate"]
         
         XCTAssertTrue(birthdateJSON == nil)
+    }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_IncludesNilValuesAsNull() {
+        let bestFriend = user.bestFriend
+        let originalJSON = user.toJSON(relationshipType: .Embedded)
+
+        XCTAssertTrue(originalJSON["bestFriend"] != nil)
+        
+        user.bestFriend = nil
+        let userJSON = user.toJSON(relationshipType: .Embedded)
+        let significantOther = userJSON["bestFriend"] as? NSNull
+        
+        XCTAssertTrue(significantOther != nil)
+        
+        user.bestFriend = bestFriend
     }
 }

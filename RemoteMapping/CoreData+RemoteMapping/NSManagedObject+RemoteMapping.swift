@@ -44,8 +44,8 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
-        return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys)
+    func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+        return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys, includeNilValues: includeNilValues)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject representing only the changed properties, as specified by the RemoteMapping implementation
@@ -55,11 +55,11 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
+    func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
         let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
         
-        return jsonObjectForProperties(remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys)
+        return jsonObjectForProperties(remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys, includeNilValues: includeNilValues)
     }
     
     /// Returns a JSON object.
@@ -70,21 +70,27 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = []) -> JSONObject {
+    private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         var json = JSONObject()
         
         let jsonProperties = properties.filter { !excludeKeys.contains($0.name) }
         
         /// For each property descriptions...
         for propertyDescription in jsonProperties {
+            /// Get the relationship names
+            let localRelationshipName = propertyDescription.name
+            let remoteRelationshipName = propertyDescription.remotePropertyName
+            
             /// If it's an attribute description...
             if let attributeDescription = propertyDescription as? NSAttributeDescription {
-                /// Get the remote key and a value for the attribute description
-                let remoteKey = attributeDescription.remotePropertyName
                 let value = valueForAttribueDescription(attributeDescription)
                 
                 /// Update `json`
-                json[remoteKey] = value
+                if let value = value {
+                    json[remoteRelationshipName] = value
+                } else if includeNilValues {
+                    json[remoteRelationshipName] = NSNull()
+                }
                 
             /// If the property is a relationship description...
             } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription where (relationshipType != .None) {
@@ -95,30 +101,30 @@ public extension NSManagedObject {
                 let isValidRelationship = !(parent != nil && (parent?.entity == relationshipDescription.destinationEntity) && !relationshipDescription.toMany)
                 
                 if isValidRelationship {
-                    /// Get the relationship names
-                    let localRelationshipName = relationshipDescription.name
-                    let remoteRelationshipName = relationshipDescription.remotePropertyName
-                    
                     /// If there are relationships at `localRelationshipName`
-                    if let relationships = valueForKey(localRelationshipName) {
+                    if let relationshipValue = valueForKey(localRelationshipName) {
                         /// If the relationship is to a single object...
-                        if let destinationObject = relationships as? NSManagedObject {
-                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
+                        if let destinationObject = relationshipValue as? NSManagedObject {
+                            let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self, includeNilValues: includeNilValues)
                             
                             json += toOneRelationshipAttributes
                             
                         /// If the relationship is to a set of objects...
-                        } else if let relationshipSet = relationships as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
+                        } else if let relationshipSet = relationshipValue as? Set<NSManagedObject> {
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self, includeNilValues: includeNilValues)
                             
                             json += toManyRelationshipAttributes
                             
                         /// If the relationship is to an ordered set of objects...
-                        } else if let relationshipSet = (relationships as? NSOrderedSet)?.set as? Set<NSManagedObject> {
-                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self)
+                        } else if let relationshipSet = (relationshipValue as? NSOrderedSet)?.set as? Set<NSManagedObject> {
+                            let toManyRelationshipAttributes = jsonAttributesForToManyRelationship(relationshipSet, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self, includeNilValues: includeNilValues)
                             
                             json += toManyRelationshipAttributes
                         }
+                    } else if includeNilValues {
+                        json += [
+                            remoteRelationshipName: NSNull()
+                        ]
                     }
                 }
             }
@@ -128,25 +134,25 @@ public extension NSManagedObject {
     }
     
     /// Returns the JSON attributes for a to-one relationship.
-    private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
+    private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
         return [
-            relationshipName: jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType)
+            relationshipName: jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType, includeNilValues: includeNilValues)
         ]
     }
     
     /// Returns the JSON attributes for a to-many relationship.
     /// Internally maps `objects` to `jsonAttributesForObject`
-    private func jsonAttributesForToManyRelationship(objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?) -> JSONObject {
+    private func jsonAttributesForToManyRelationship(objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
         return [
-            relationshipName: objects.map { jsonAttributesForObject($0, parent: parent, relationshipType: relationshipType) }
+            relationshipName: objects.map { jsonAttributesForObject($0, parent: parent, relationshipType: relationshipType, includeNilValues: includeNilValues) }
         ]
     }
     
     /// Transforms an object to JSON, using the supplied `relationshipType`.
-    private func jsonAttributesForObject(object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType) -> AnyObject {
+    private func jsonAttributesForObject(object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType, includeNilValues: Bool = true) -> AnyObject {
         switch relationshipType {
         case .Embedded:
-            return object.toJSON(parent, relationshipType: relationshipType)
+            return object.toJSON(parent, relationshipType: relationshipType, includeNilValues: includeNilValues)
         case .Reference:
             return object.primaryKey ?? NSNull()
         default:
