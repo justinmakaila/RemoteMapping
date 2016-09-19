@@ -8,10 +8,10 @@ public final class User: NSManagedObject {
     public var age: Int16
     
     @NSManaged
-    private var favoriteWordsValue: NSData
+    fileprivate var favoriteWordsValue: Data
     public var favoriteWords: [String] {
         get {
-            guard let favoriteWords = NSKeyedUnarchiver.unarchiveObjectWithData(favoriteWordsValue) as? [String]
+            guard let favoriteWords = NSKeyedUnarchiver.unarchiveObject(with: favoriteWordsValue) as? [String]
             else {
                 return []
             }
@@ -19,7 +19,7 @@ public final class User: NSManagedObject {
             return favoriteWords
         }
         set {
-            favoriteWordsValue = NSKeyedArchiver.archivedDataWithRootObject(newValue)
+            favoriteWordsValue = NSKeyedArchiver.archivedData(withRootObject: newValue)
         }
     }
     
@@ -27,7 +27,7 @@ public final class User: NSManagedObject {
     public var transformable: [String]
     
     @NSManaged
-    public var birthdate: NSDate
+    public var birthdate: Date
     
     @NSManaged
     public var height: Float

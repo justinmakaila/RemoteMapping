@@ -39,7 +39,7 @@ extension NSEntityDescription: RemoteEntityType {
     
     /// An index of remote property names and the corresponding
     /// property description.
-    public func remotePropertiesByName(useLocalNames: Bool = false) -> [String: NSPropertyDescription] {
+    public func remotePropertiesByName(_ useLocalNames: Bool = false) -> [String: NSPropertyDescription] {
         return remoteProperties
             .reduce([String: NSPropertyDescription]()) { remotePropertiesByName, propertyDescription in
                 let key = (useLocalNames) ? propertyDescription.name : propertyDescription.remotePropertyName
@@ -61,7 +61,7 @@ extension NSEntityDescription: RemoteEntityType {
     
     /// An index of remote property names and the corresponding
     /// relationship description
-    public func remoteRelationshipsByName(useLocalNames: Bool = false) -> [String: NSRelationshipDescription] {
+    public func remoteRelationshipsByName(_ useLocalNames: Bool = false) -> [String: NSRelationshipDescription] {
         return remoteRelationships
             .reduce([String: NSRelationshipDescription]()) { remoteRelationshipsByName, relationshipDescription in
                 let key = (useLocalNames) ? relationshipDescription.name : relationshipDescription.remotePropertyName
@@ -80,7 +80,7 @@ extension NSEntityDescription: RemoteEntityType {
         return remoteProperties.flatMap { $0 as? NSAttributeDescription }
     }
     
-    public func remoteAttributesByName(useLocalNames: Bool = false) -> [String: NSAttributeDescription] {
+    public func remoteAttributesByName(_ useLocalNames: Bool = false) -> [String: NSAttributeDescription] {
         return remoteAttributes
             .reduce([String: NSAttributeDescription]()) { remoteAttributesByName, attributeDescription in
                 let key = (useLocalNames) ? attributeDescription.name : attributeDescription.remotePropertyName

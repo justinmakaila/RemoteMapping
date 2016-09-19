@@ -2,22 +2,22 @@ import CoreData
 import ISO8601
 
 
-func += <KeyType, ValueType> (inout left: Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
+func += <KeyType, ValueType> (left: inout Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
     for (k, v) in right {
         left.updateValue(v, forKey: k)
     }
 }
 
-public typealias JSONObject = [String: AnyObject]
+public typealias JSONObject = [String: Any]
 
 /// Represents relationships for JSON serialization
 public enum RelationshipType: String {
     /// Don't include any relationship
-    case None = "none"
+    case none = "none"
     /// Include embedded objects
-    case Embedded = "embedded"
+    case embedded = "embedded"
     /// Include refrences by primary key
-    case Reference = "reference"
+    case reference = "reference"
 }
 
 /// To JSON methods
@@ -34,7 +34,7 @@ public extension NSManagedObject {
     
     /// The value for `localPrimaryKeyName`.
     var primaryKey: AnyObject? {
-        return valueForKey(localPrimaryKeyName)
+        return value(forKey: localPrimaryKeyName) as AnyObject?
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject, as specified by the RemoteMapping implementation
@@ -44,7 +44,7 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    func toJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    func toJSON(_ parent: NSManagedObject? = nil, relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         return jsonObjectForProperties(entity.remoteProperties, parent: parent, relationshipType: relationshipType, excludeKeys: excludeKeys, includeNilValues: includeNilValues)
     }
     
@@ -55,7 +55,7 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    func toChangedJSON(parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    func toChangedJSON(_ parent: NSManagedObject? = nil, relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
         let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
         
@@ -70,7 +70,7 @@ public extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    private func jsonObjectForProperties(properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .Embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    fileprivate func jsonObjectForProperties(_ properties: [NSPropertyDescription], parent: NSManagedObject? = nil, relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         var json = JSONObject()
         
         let jsonProperties = properties.filter { !excludeKeys.contains($0.name) }
@@ -93,16 +93,16 @@ public extension NSManagedObject {
                 }
                 
             /// If the property is a relationship description...
-            } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription where (relationshipType != .None) {
+            } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription , (relationshipType != .none) {
                 let relationshipMappingType = relationshipDescription.relationshipMapping ?? relationshipType
                 
                 /// A valid relationship is one which does not go back up the relationship heirarchy...
                 /// TODO: This condition could be much clearer
-                let isValidRelationship = !(parent != nil && (parent?.entity == relationshipDescription.destinationEntity) && !relationshipDescription.toMany)
+                let isValidRelationship = !(parent != nil && (parent?.entity == relationshipDescription.destinationEntity) && !relationshipDescription.isToMany)
                 
                 if isValidRelationship {
                     /// If there are relationships at `localRelationshipName`
-                    if let relationshipValue = valueForKey(localRelationshipName) {
+                    if let relationshipValue = value(forKey: localRelationshipName) {
                         /// If the relationship is to a single object...
                         if let destinationObject = relationshipValue as? NSManagedObject {
                             let toOneRelationshipAttributes = jsonAttributesForToOneRelationship(destinationObject, relationshipName: remoteRelationshipName, relationshipType: relationshipMappingType, parent: self, includeNilValues: includeNilValues)
@@ -134,7 +134,7 @@ public extension NSManagedObject {
     }
     
     /// Returns the JSON attributes for a to-one relationship.
-    private func jsonAttributesForToOneRelationship(object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
+    fileprivate func jsonAttributesForToOneRelationship(_ object: NSManagedObject, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
         return [
             relationshipName: jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType, includeNilValues: includeNilValues)
         ]
@@ -142,18 +142,22 @@ public extension NSManagedObject {
     
     /// Returns the JSON attributes for a to-many relationship.
     /// Internally maps `objects` to `jsonAttributesForObject`
-    private func jsonAttributesForToManyRelationship(objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
+    fileprivate func jsonAttributesForToManyRelationship(_ objects: Set<NSManagedObject>, relationshipName: String, relationshipType: RelationshipType, parent: NSManagedObject?, includeNilValues: Bool = true) -> JSONObject {
+        let jsonObjects: [AnyObject] = objects.map { object in
+            return jsonAttributesForObject(object, parent: parent, relationshipType: relationshipType, includeNilValues: includeNilValues)
+        }
+        
         return [
-            relationshipName: objects.map { jsonAttributesForObject($0, parent: parent, relationshipType: relationshipType, includeNilValues: includeNilValues) }
+            relationshipName: jsonObjects
         ]
     }
     
     /// Transforms an object to JSON, using the supplied `relationshipType`.
-    private func jsonAttributesForObject(object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType, includeNilValues: Bool = true) -> AnyObject {
+    fileprivate func jsonAttributesForObject(_ object: NSManagedObject, parent: NSManagedObject?, relationshipType: RelationshipType, includeNilValues: Bool = true) -> AnyObject {
         switch relationshipType {
-        case .Embedded:
-            return object.toJSON(parent, relationshipType: relationshipType, includeNilValues: includeNilValues)
-        case .Reference:
+        case .embedded:
+            return object.toJSON(parent, relationshipType: relationshipType, includeNilValues: includeNilValues) as AnyObject
+        case .reference:
             return object.primaryKey ?? NSNull()
         default:
             return NSNull()
@@ -176,16 +180,16 @@ extension NSManagedObject {
     ///
     /// - Note:
     ///     All NSDate attributes are transformed to ISO-8601
-    public func valueForAttribueDescription(attributeDescription: NSAttributeDescription) -> AnyObject? {
+    public func valueForAttribueDescription(_ attributeDescription: NSAttributeDescription) -> AnyObject? {
         var value: AnyObject?
         
-        if attributeDescription.attributeType != .TransformableAttributeType {
-            value = valueForKey(attributeDescription.name)
+        if attributeDescription.attributeType != .transformableAttributeType {
+            value = self.value(forKey: attributeDescription.name) as AnyObject?
             
-            if let date = value as? NSDate {
-                value = date.ISO8601StringWithTimeZone(nil, usingCalendar: nil)
-            } else if let data = value as? NSData {
-                value = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+            if let date = value as? Date {
+                value = (date as NSDate).iso8601String(with: nil, using: nil) as AnyObject?
+            } else if let data = value as? Data {
+                value = NSKeyedUnarchiver.unarchiveObject(with: data) as AnyObject?
             }
         }
         
@@ -193,10 +197,10 @@ extension NSManagedObject {
     }
     
     /// Gets a `NSAttributeDescription` matching `key`, or nil.
-    public func attributeDescriptionForRemoteKey(key: String) -> NSAttributeDescription? {
+    public func attributeDescriptionForRemoteKey(_ key: String) -> NSAttributeDescription? {
         var foundAttributeDescription: NSAttributeDescription?
         
-        for (_, propertyDescription) in entity.properties.enumerate() {
+        for (_, propertyDescription) in entity.properties.enumerated() {
             if let attributeDescription = propertyDescription as? NSAttributeDescription {
                 let remoteKey = attributeDescription.remotePropertyName
                 
@@ -210,7 +214,7 @@ extension NSManagedObject {
     }
     
     /// Returns a valid JSON value for the attribute description by transforming from the remote value.
-    public func valueForAttributeDescription(attributeDescription: NSAttributeDescription, usingRemoteValue remoteValue: AnyObject) -> AnyObject? {
+    public func valueForAttributeDescription(_ attributeDescription: NSAttributeDescription, usingRemoteValue remoteValue: AnyObject) -> AnyObject? {
         var value: AnyObject?
         
         var attributeClass: AnyClass?
@@ -218,7 +222,7 @@ extension NSManagedObject {
             attributeClass = NSClassFromString(attributeValueClass)
         }
         
-        if let attributeClass = attributeClass where remoteValue.isKindOfClass(attributeClass) {
+        if let attributeClass = attributeClass , remoteValue.isKind(of: attributeClass) {
             value = remoteValue
         }
         
@@ -227,8 +231,8 @@ extension NSManagedObject {
         
         let attributeIsNumber = attributeClass == NSNumber.self
         let attributeIsString = attributeClass == NSString.self
-        let attributeIsDate = attributeClass == NSDate.self
-        let attributeIsData = attributeClass == NSData.self
+        let attributeIsDate = attributeClass == Date.self
+        let attributeIsData = attributeClass == Data.self
         let attributeIsDecimalNumber = attributeClass == NSDecimalNumber.self
         
         let stringValueAndNumberAttribute = remoteValueIsString && attributeIsNumber
@@ -239,21 +243,21 @@ extension NSManagedObject {
         let numberValueAndDecimalAttribute = remoteValueIsNumber && attributeIsDecimalNumber
         let stringValueAndDecimalAttribute = remoteValueIsString && attributeIsDecimalNumber
         
-        if let remoteValue = remoteValue as? String where stringValueAndNumberAttribute {
-            let numberFormatter = NSNumberFormatter()
-            numberFormatter.locale = NSLocale(localeIdentifier: "en_US")
-            value = numberFormatter.numberFromString(remoteValue)
+        if let remoteValue = remoteValue as? String , stringValueAndNumberAttribute {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.locale = Locale(identifier: "en_US")
+            value = numberFormatter.number(from: remoteValue)
         } else if numberValueAndStringAttribute {
-            value = "\(remoteValue)"
-        } else if let remoteValue = remoteValue as? String where stringValueAndDateAttribute {
-            value = NSDate(ISO8601String: remoteValue)
-        } else if let remoteValue = remoteValue as? NSTimeInterval where numberValueAndDateAttribute {
-            value = NSDate(timeIntervalSince1970: remoteValue)
+            value = "\(remoteValue)" as AnyObject?
+        } else if let remoteValue = remoteValue as? String , stringValueAndDateAttribute {
+            value = NSDate(iso8601String: remoteValue)
+        } else if let remoteValue = remoteValue as? TimeInterval , numberValueAndDateAttribute {
+            value = Date(timeIntervalSince1970: remoteValue) as AnyObject?
         } else if dataAttribute {
-            value = NSKeyedArchiver.archivedDataWithRootObject(remoteValue)
-        } else if let remoteValue = remoteValue as? NSNumber where numberValueAndDecimalAttribute {
+            value = NSKeyedArchiver.archivedData(withRootObject: remoteValue) as AnyObject?
+        } else if let remoteValue = remoteValue as? NSNumber , numberValueAndDecimalAttribute {
             value = NSDecimalNumber(decimal: remoteValue.decimalValue)
-        } else if let remoteValue = remoteValue as? String where stringValueAndDecimalAttribute {
+        } else if let remoteValue = remoteValue as? String , stringValueAndDecimalAttribute {
             value = NSDecimalNumber(string: remoteValue)
         }
         
