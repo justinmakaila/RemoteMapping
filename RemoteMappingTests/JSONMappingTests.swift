@@ -127,4 +127,17 @@ class JSONMappingTests: RemoteMappingTestCase {
         
         user.bestFriend = bestFriend
     }
+    
+    func test_NSManagedObjectFromRemoteMappingEntityDescription_ReturnsValueForAttributeDescription() {
+        let testDateString = "2016-09-23T18:38:29.392Z"
+        guard let birthdateAttributeDescription = user.attributeDescriptionForRemoteKey("birthdate")
+        else {
+            return XCTAssert(false)
+        }
+        
+        let value = user.valueForAttributeDescription(birthdateAttributeDescription, usingRemoteValue: testDateString as
+            NSObject)
+        XCTAssertNotNil(value)
+        XCTAssertTrue(value is Date)
+    }
 }
