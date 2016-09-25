@@ -54,9 +54,9 @@ class JSONMappingTests: RemoteMappingTestCase {
         }
         
         /// Dates are not equivalent, but print the same thing...
-        //XCTAssertTrue(justinJSON["birthdate"] is String)
-        //let birthdate = NSDate(ISO8601String: justinJSON["birthdate"] as! String)!
-        //XCTAssertTrue(birthdate == justin.birthdate)
+        XCTAssertTrue(userJSON["birthdate"] is String)
+        let birthdate = NSDate(iso8601String: userJSON["birthdate"] as! String)! as Date
+        XCTAssertTrue(birthdate == user.birthdate)
         
         XCTAssertTrue(userJSON["age"] is NSNumber)
         let age = userJSON["age"] as! NSNumber

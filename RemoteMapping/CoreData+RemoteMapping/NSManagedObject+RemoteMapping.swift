@@ -226,13 +226,13 @@ extension NSManagedObject {
             value = remoteValue
         }
         
-        let remoteValueIsString = remoteValue is NSString
+        let remoteValueIsString = remoteValue is NSString || remoteValue is String
         let remoteValueIsNumber = remoteValue is NSNumber
         
         let attributeIsNumber = attributeClass == NSNumber.self
-        let attributeIsString = attributeClass == NSString.self
-        let attributeIsDate = attributeClass == Date.self
-        let attributeIsData = attributeClass == Data.self
+        let attributeIsString = attributeClass == NSString.self || attributeClass == String.self
+        let attributeIsDate = attributeClass == Date.self || attributeClass == NSDate.self
+        let attributeIsData = attributeClass == Data.self || attributeClass == NSData.self
         let attributeIsDecimalNumber = attributeClass == NSDecimalNumber.self
         
         let stringValueAndNumberAttribute = remoteValueIsString && attributeIsNumber
@@ -249,9 +249,9 @@ extension NSManagedObject {
             value = numberFormatter.number(from: remoteValue)
         } else if numberValueAndStringAttribute {
             value = "\(remoteValue)" as AnyObject?
-        } else if let remoteValue = remoteValue as? String , stringValueAndDateAttribute {
+        } else if let remoteValue = remoteValue as? String, stringValueAndDateAttribute {
             value = NSDate(iso8601String: remoteValue)
-        } else if let remoteValue = remoteValue as? TimeInterval , numberValueAndDateAttribute {
+        } else if let remoteValue = remoteValue as? TimeInterval, numberValueAndDateAttribute {
             value = Date(timeIntervalSince1970: remoteValue) as AnyObject?
         } else if dataAttribute {
             value = NSKeyedArchiver.archivedData(withRootObject: remoteValue) as AnyObject?
