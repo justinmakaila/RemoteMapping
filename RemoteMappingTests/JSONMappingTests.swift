@@ -1,6 +1,5 @@
 import XCTest
 import CoreData
-import ISO8601
 
 @testable
 import RemoteMapping
@@ -53,10 +52,17 @@ class JSONMappingTests: RemoteMappingTestCase {
             XCTAssertTrue(favoriteWords.contains(word))
         }
         
-        /// Dates are not equivalent, but print the same thing...
         XCTAssertTrue(userJSON["birthdate"] is String)
-        let birthdate = NSDate(iso8601String: userJSON["birthdate"] as! String)! as Date
-        XCTAssertTrue(birthdate == user.birthdate)
+        let birthdateString = userJSON["birthdate"] as! String
+        XCTAssertTrue(birthdateString == Date.ISOStringFromDate(date: user.birthdate))
+        XCTAssertTrue(user.birthdate == Date.dateFromISOString(string: birthdateString))
+        
+        print()
+        print()
+        let birthdate = Date.dateFromISOString(string: birthdateString)
+        print(user.birthdate, "interval:", user.birthdate.timeIntervalSince1970)
+        print(birthdateString, birthdate, "interval:", birthdate?.timeIntervalSince1970)
+        print()
         
         XCTAssertTrue(userJSON["age"] is NSNumber)
         let age = userJSON["age"] as! NSNumber

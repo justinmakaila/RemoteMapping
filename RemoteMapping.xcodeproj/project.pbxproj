@@ -14,7 +14,6 @@
 		7C47C3A71C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3A61C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift */; };
 		7C47C3A91C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3A81C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift */; };
 		7C47C3AB1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */; };
-		7C47C3B01C9B3317005ACF99 /* ISO8601.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */; };
 		7C8F587D1C960FCD00CC2E0A /* RemoteEntityTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1251C960E5800360D74 /* RemoteEntityTypeTests.swift */; };
 		7C8F587E1C960FCD00CC2E0A /* RemoteMappingTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1261C960E5800360D74 /* RemoteMappingTestCase.swift */; };
 		7C8F587F1C960FCD00CC2E0A /* RemoteObjectTypeMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ED1271C960E5800360D74 /* RemoteObjectTypeMappingTests.swift */; };
@@ -22,7 +21,6 @@
 		7C8F58871C96231400CC2E0A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F58861C96231400CC2E0A /* Keys.swift */; };
 		7C99BCC41CA8CE49003E2100 /* JSONMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C99BCC31CA8CE49003E2100 /* JSONMappingTests.swift */; };
 		7C99BCC71CA8D0FA003E2100 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C99BCC61CA8D0FA003E2100 /* User.swift */; };
-		7CFA20BA1CA8DD590088E5F7 /* ISO8601.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +40,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7CFA20BA1CA8DD590088E5F7 /* ISO8601.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,8 +60,6 @@
 		7C47C3A61C9B24D1005ACF99 /* NSPropertyDescription+RemoteObjectMappingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSPropertyDescription+RemoteObjectMappingType.swift"; path = "CoreData+RemoteMapping/NSPropertyDescription+RemoteObjectMappingType.swift"; sourceTree = "<group>"; };
 		7C47C3A81C9B2504005ACF99 /* NSEntityDescription+RemoteEntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSEntityDescription+RemoteEntityType.swift"; path = "CoreData+RemoteMapping/NSEntityDescription+RemoteEntityType.swift"; sourceTree = "<group>"; };
 		7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+RemoteMapping.swift"; path = "CoreData+RemoteMapping/NSManagedObject+RemoteMapping.swift"; sourceTree = "<group>"; };
-		7C47C3AD1C9B32E4005ACF99 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ISO8601.framework; path = Carthage/Build/iOS/ISO8601.framework; sourceTree = "<group>"; };
 		7C8F58861C96231400CC2E0A /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "CoreData+RemoteMapping/Keys.swift"; sourceTree = "<group>"; };
 		7C99BCC31CA8CE49003E2100 /* JSONMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONMappingTests.swift; sourceTree = "<group>"; };
 		7C99BCC61CA8D0FA003E2100 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Model/User.swift; sourceTree = "<group>"; };
@@ -75,7 +70,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C47C3B01C9B3317005ACF99 /* ISO8601.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +87,6 @@
 		7C2ED0EA1C95EE6B00360D74 = {
 			isa = PBXGroup;
 			children = (
-				7C47C3AC1C9B32D7005ACF99 /* Dependencies */,
 				7C2ED11E1C960E5800360D74 /* RemoteMapping */,
 				7C2ED1231C960E5800360D74 /* RemoteMappingTests */,
 				7C2ED0F51C95EE6B00360D74 /* Products */,
@@ -143,15 +136,6 @@
 				7C47C3AA1C9B2872005ACF99 /* NSManagedObject+RemoteMapping.swift */,
 			);
 			name = "CoreData+RemoteMapping";
-			sourceTree = "<group>";
-		};
-		7C47C3AC1C9B32D7005ACF99 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				7C47C3AF1C9B3317005ACF99 /* ISO8601.framework */,
-				7C47C3AD1C9B32E4005ACF99 /* Cartfile */,
-			);
-			name = Dependencies;
 			sourceTree = "<group>";
 		};
 		7C99BCC51CA8D0F0003E2100 /* Model */ = {

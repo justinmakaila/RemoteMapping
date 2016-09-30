@@ -1,10 +1,36 @@
 import CoreData
-import ISO8601
 
 
 func += <KeyType, ValueType> (left: inout Dictionary<KeyType, ValueType>, right: Dictionary<KeyType, ValueType>) {
     for (k, v) in right {
         left.updateValue(v, forKey: k)
+    }
+}
+
+private let ISO8601FormatString = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+private let ISO8601InputFormatString = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+
+extension DateFormatter {
+    class func ISO8601DateFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+        dateFormatter.dateFormat = ISO8601FormatString
+        
+        return dateFormatter
+    }
+}
+
+public extension Date {
+    public static func ISOStringFromDate(date: Date) -> String {
+        let dateFormatter = DateFormatter.ISO8601DateFormatter()
+        return dateFormatter.string(from: date).appending("Z")
+    }
+    
+    public static func dateFromISOString(string: String) -> Date? {
+        let dateFormatter = DateFormatter.ISO8601DateFormatter()
+        dateFormatter.dateFormat = ISO8601InputFormatString
+        return dateFormatter.date(from: string)
     }
 }
 
@@ -187,7 +213,7 @@ extension NSManagedObject {
             value = self.value(forKey: attributeDescription.name) as AnyObject?
             
             if let date = value as? Date {
-                value = (date as NSDate).iso8601String(with: nil, using: nil) as AnyObject?
+                value = Date.ISOStringFromDate(date: date) as AnyObject
             } else if let data = value as? Data {
                 value = NSKeyedUnarchiver.unarchiveObject(with: data) as AnyObject?
             }
@@ -243,18 +269,19 @@ extension NSManagedObject {
         let numberValueAndDecimalAttribute = remoteValueIsNumber && attributeIsDecimalNumber
         let stringValueAndDecimalAttribute = remoteValueIsString && attributeIsDecimalNumber
         
-        if let remoteValue = remoteValue as? String , stringValueAndNumberAttribute {
+        if let remoteValue = remoteValue as? String, stringValueAndNumberAttribute {
             let numberFormatter = NumberFormatter()
             numberFormatter.locale = Locale(identifier: "en_US")
+            
             value = numberFormatter.number(from: remoteValue)
         } else if numberValueAndStringAttribute {
-            value = "\(remoteValue)" as AnyObject?
+            value = "\(remoteValue)" as AnyObject
         } else if let remoteValue = remoteValue as? String, stringValueAndDateAttribute {
-            value = NSDate(iso8601String: remoteValue)
+            value = Date.dateFromISOString(string: remoteValue) as AnyObject?
         } else if let remoteValue = remoteValue as? TimeInterval, numberValueAndDateAttribute {
             value = Date(timeIntervalSince1970: remoteValue) as AnyObject?
         } else if dataAttribute {
-            value = NSKeyedArchiver.archivedData(withRootObject: remoteValue) as AnyObject?
+            value = NSKeyedArchiver.archivedData(withRootObject: remoteValue) as AnyObject
         } else if let remoteValue = remoteValue as? NSNumber , numberValueAndDecimalAttribute {
             value = NSDecimalNumber(decimal: remoteValue.decimalValue)
         } else if let remoteValue = remoteValue as? String , stringValueAndDecimalAttribute {
