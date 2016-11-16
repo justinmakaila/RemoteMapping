@@ -6,19 +6,19 @@ import RemoteMapping
 
 
 class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
-    var entity: NSEntityDescription!
+    var entityDescription: NSEntityDescription!
     
     override func setUp() {
         super.setUp()
         
-        self.entity = entityForName("RemoteObjectEntity")
+        entityDescription = entity(named: "RemoteObjectEntity", inContext: managedObjectContext)
     }
     
     /// A property description can provide custom property names.
     /// In this case, `entity` has a property named "customRemoteProperty",
     /// which provides a custom remote property name of "remoteProperty".
     func test_RemoteObjectMappingType_ProvidesCustomPropertyNames() {
-        guard let customRemotePropertyDescription = entity.propertiesByName["customRemoteProperty"]
+        guard let customRemotePropertyDescription = entityDescription.propertiesByName["customRemoteProperty"]
         else {
             fatalError("Could not find property")
         }
@@ -31,7 +31,7 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
     /// In this case, `entity` has a property named "defaultRemoteProperty",
     /// which equals the property description's name.
     func test_RemoteObjectMappingType_ProvidesDefaultPropertyNames() {
-        guard let defaultRemotePropertyDescription = entity.propertiesByName["defaultRemoteProperty"]
+        guard let defaultRemotePropertyDescription = entityDescription.propertiesByName["defaultRemoteProperty"]
         else {
             fatalError("Could not find property")
         }
@@ -45,7 +45,7 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
     /// In this case, `entity` has a property named "remoteShouldIgnore",
     /// which should not exist in a remote representation.
     func test_RemoteObjectMappingType_ProvidesIgnoredProperties() {
-        guard let remoteShouldIgnorePropertyDescription = entity.propertiesByName["remoteShouldIgnore"]
+        guard let remoteShouldIgnorePropertyDescription = entityDescription.propertiesByName["remoteShouldIgnore"]
         else {
             fatalError("Could not find property")
         }
@@ -53,7 +53,7 @@ class RemoteObjectMappingTypeTests: RemoteMappingTestCase {
         let shouldIgnore = remoteShouldIgnorePropertyDescription.remoteShouldIgnore
         
         XCTAssertTrue(shouldIgnore)
-        XCTAssertTrue(entity.properties.count == 3)
-        XCTAssertTrue(entity.remoteProperties.count == 2)
+        XCTAssertTrue(entityDescription.properties.count == 3)
+        XCTAssertTrue(entityDescription.remoteProperties.count == 2)
     }
 }
