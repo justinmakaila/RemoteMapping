@@ -103,23 +103,44 @@ extension NSEntityDescription {
 }
 
 /// MARK: - Query Helpers
-/// MARK: Predicates
+/// MARK: Local Predicates
 extension NSEntityDescription {
     /// Returns a predicate matching the value of key `localPrimaryKeyName`
     /// against `keyValue`.
-    public func matchingPrimaryKey<Value: CVarArg>(keyValue: Value) -> NSPredicate {
+    public func matchingLocalPrimaryKey<Value: CVarArg>(keyValue: Value) -> NSPredicate {
         return NSPredicate(format: "%K == %@", localPrimaryKeyName, keyValue)
     }
     
     /// Returns a predicate matching the value of key `localPrimaryKeyName` 
     /// in `keyValues`.
-    public func matchingPrimaryKeys<Value: CVarArg>(keyValues: [Value]) -> NSPredicate {
+    public func matchingLocalPrimaryKeys<Value: CVarArg>(keyValues: [Value]) -> NSPredicate {
         return NSPredicate(format: "%K in %@", localPrimaryKeyName, keyValues)
     }
     
     /// Returns a predicate matching the value of key `localPrimaryKeyName`
     /// in the set `keyValues`.
-    public func matchingPrimaryKeys<Value: CVarArg & Hashable>(keyValues: Set<Value>) -> NSPredicate {
+    public func matchingLocalPrimaryKeys<Value: CVarArg & Hashable>(keyValues: Set<Value>) -> NSPredicate {
         return NSPredicate(format: "%K in %@", localPrimaryKeyName, keyValues)
+    }
+}
+
+/// MARK: Remote Predicates
+extension NSEntityDescription {
+    /// Returns a predicate matching the value of key `remotePrimaryKeyName`
+    /// against `keyValue`.
+    public func matchingRemotePrimaryKey<Value: CVarArg>(keyValue: Value) -> NSPredicate {
+        return NSPredicate(format: "%K == %@", remotePrimaryKeyName, keyValue)
+    }
+    
+    /// Returns a predicate matching the value of key `remotePrimaryKeyName`
+    /// in `keyValues`.
+    public func matchingRemotePrimaryKeys<Value: CVarArg>(keyValues: [Value]) -> NSPredicate {
+        return NSPredicate(format: "%K in %@", remotePrimaryKeyName, keyValues)
+    }
+    
+    /// Returns a predicate matching the value of key `remotePrimaryKeyName`
+    /// in the set `keyValues`.
+    public func matchingRemotePrimaryKeys<Value: CVarArg & Hashable>(keyValues: Set<Value>) -> NSPredicate {
+        return NSPredicate(format: "%K in %@", remotePrimaryKeyName, keyValues)
     }
 }
